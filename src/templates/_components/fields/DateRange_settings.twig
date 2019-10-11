@@ -1,0 +1,44 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Date Range plugin for Craft CMS
+ *
+ * DateRange Field Settings
+ *
+ * @author    Studio Espresso
+ * @copyright Copyright (c) 2019 Studio Espresso
+ * @link      https://studioespresso.co/en
+ * @package   DateRange
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{{ forms.lightswitchField({
+    label: "Show start date"|t("date-range"),
+    id: "showStartDate",
+    name: "showStartDate",
+    on: field.showStartDate,
+}) }}
+
+{{ forms.lightswitchField({
+    label: "Show start time"|t("date-range"),
+    id: "showStartTime",
+    name: "showStartTime",
+    on: field.showStartTime,
+}) }}
+
+{{ forms.lightswitchField({
+    label: "Show end date"|t("date-range"),
+    id: "showEndDate",
+    name: "showEndDate",
+    on: field.showEndDate,
+}) }}
+
+{{ forms.lightswitchField({
+    label: "Show end time"|t("date-range"),
+    id: "showEndTime",
+    name: "showEndTime",
+    on: field.showEndTime,
+}) }}
