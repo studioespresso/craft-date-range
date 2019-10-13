@@ -15,10 +15,44 @@
 
 {% import "_includes/forms" as forms %}
 
-{{ forms.textField({
-        label: 'Some Field',
-        instructions: 'Enter some text here.',
-        id: name,
-        name: name,
-        value: value})
-}}
+<div class="datetimewrapper">
+    {% if field.showStartDate %}
+        {{ forms.dateField({
+            label: 'Start date',
+            id: name~'StartDate',
+            name: name ~ '[start]',
+            value: value.start.date ?? ''
+        }) }}
+    {% endif %}
+    {% if field.showStartTime %}
+        {{ forms.timeField({
+            label: 'Start time',
+            id: name~'StartTime',
+            name: name ~ '[start]',
+            value: value.start.time ?? ''
+
+        }) }}
+    {% endif %}
+</div>
+
+<div class="datetimewrapper">
+
+    {% if field.showEndDate %}
+        {{ forms.dateField({
+            label: 'End date',
+            id: name~'EndDate',
+            name: name ~ '[end]',
+            value: value.end.date ?? ''
+
+        }) }}
+    {% endif %}
+    {% if field.showEndTime %}
+        {{ forms.timeField({
+            label: 'End time',
+            id: name~'EndTime',
+            name: name ~ '[end]',
+            value: value.end.time ?? ''
+
+        }) }}
+    {% endif %}
+</div>
