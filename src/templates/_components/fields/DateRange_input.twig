@@ -15,13 +15,12 @@
 
 {% import "_includes/forms" as forms %}
 
-<div class="datetimewrapper">
     {% if field.showStartDate %}
         {{ forms.dateField({
             label: 'Start date',
             id: name~'StartDate',
             name: name ~ '[start]',
-            value: value.start.date ?? ''
+            value: value.start ?? ''
         }) }}
     {% endif %}
     {% if field.showStartTime %}
@@ -29,21 +28,17 @@
             label: 'Start time',
             id: name~'StartTime',
             name: name ~ '[start]',
-            value: value.start.time ?? ''
+            value: value.start ?? ''
 
         }) }}
     {% endif %}
-</div>
-
-<div class="datetimewrapper">
 
     {% if field.showEndDate %}
         {{ forms.dateField({
             label: 'End date',
             id: name~'EndDate',
             name: name ~ '[end]',
-            value: value.end.date ?? ''
-
+            value: value.end ?? ''
         }) }}
     {% endif %}
     {% if field.showEndTime %}
@@ -51,8 +46,7 @@
             label: 'End time',
             id: name~'EndTime',
             name: name ~ '[end]',
-            value: value.end.time ?? ''
+            value: value.end ?? ''
 
         }) }}
     {% endif %}
-</div>

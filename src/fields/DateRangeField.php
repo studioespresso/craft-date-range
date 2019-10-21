@@ -84,10 +84,12 @@ class DateRangeField extends Field
     public function normalizeValue($value, ElementInterface $element = null)
     {
         if(is_array($value)) {
-            return $value;
+            $value = $value;
         } else {
-            return json_decode($value);
+            $value = Json::decode($value);
         }
+
+        return $value;
     }
 
     /**
@@ -95,7 +97,14 @@ class DateRangeField extends Field
      */
     public function serializeValue($value, ElementInterface $element = null)
     {
-        return parent::serializeValue($value, $element);
+        $data = [];
+        if(isset($value['start'])) {
+            $data['start'] = Db::prepareDateForDb($value['start']);
+        }
+        if(isset($value['end'])) {
+            $data['end'] = Db::prepareDateForDb($value['end']);
+        }
+        return $data;
     }
 
     /**
