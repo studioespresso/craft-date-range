@@ -10,6 +10,8 @@
 
 namespace studioespresso\daterange\fields;
 
+use craft\fields\data\ColorData;
+use craft\validators\ColorValidator;
 use studioespresso\daterange\DateRange;
 use studioespresso\daterange\assetbundles\daterangefield\DateRangeFieldAsset;
 
@@ -17,6 +19,7 @@ use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\helpers\Db;
+use studioespresso\daterange\fields\data\DateRangeData;
 use yii\db\Schema;
 use craft\helpers\Json;
 
@@ -35,11 +38,7 @@ class DateRangeField extends Field
      */
     public $someAttribute = 'Some Default';
 
-    public $showStartDate = true;
-
     public $showStartTime = false;
-
-    public $showEndDate = true;
 
     public $showEndTime = false;
 
@@ -63,10 +62,6 @@ class DateRangeField extends Field
     public function rules()
     {
         $rules = parent::rules();
-        $rules = array_merge($rules, [
-            ['someAttribute', 'string'],
-            ['someAttribute', 'default', 'value' => 'Some Default'],
-        ]);
         return $rules;
     }
 
@@ -83,28 +78,37 @@ class DateRangeField extends Field
      */
     public function normalizeValue($value, ElementInterface $element = null)
     {
-        if(is_array($value)) {
-            $value = $value;
-        } else {
-            $value = Json::decode($value);
+        if (!$value || $this->isFresh($element)) {
+            return null;
         }
 
-        return $value;
+        if ($value instanceof DateRangeData) {
+            return $value;
+        }
+
+        $value = DateRangeData::normalize($value, $this);
+        return new DateRangeData($value);
     }
 
     /**
+     * @param $value DateRangeData
      * @inheritdoc
      */
     public function serializeValue($value, ElementInterface $element = null)
     {
-        $data = [];
-        if(isset($value['start'])) {
-            $data['start'] = Db::prepareDateForDb($value['start']);
+        if (!$value || $this->isFresh($element)) {
+            return null;
         }
-        if(isset($value['end'])) {
-            $data['end'] = Db::prepareDateForDb($value['end']);
+
+        $data = [];
+        if (isset($value->start)) {
+            $data['start'] = Db::prepareDateForDb($value->start);
+        }
+        if (isset($value->end)) {
+            $data['end'] = Db::prepareDateForDb($value->end);
         }
         return $data;
+
     }
 
     /**

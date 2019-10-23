@@ -15,14 +15,13 @@
 
 {% import "_includes/forms" as forms %}
 
-    {% if field.showStartDate %}
-        {{ forms.dateField({
-            label: 'Start date',
-            id: name~'StartDate',
-            name: name ~ '[start]',
-            value: value.start ?? ''
-        }) }}
-    {% endif %}
+    {{ forms.dateField({
+        label: 'Start date',
+        id: name~'StartDate',
+        name: name ~ '[start]',
+        value: value.start ?? ''
+    }) }}
+
     {% if field.showStartTime %}
         {{ forms.timeField({
             label: 'Start time',
@@ -33,14 +32,13 @@
         }) }}
     {% endif %}
 
-    {% if field.showEndDate %}
-        {{ forms.dateField({
-            label: 'End date',
-            id: name~'EndDate',
-            name: name ~ '[end]',
-            value: value.end ?? ''
-        }) }}
-    {% endif %}
+    {{ forms.dateField({
+        label: 'End date',
+        id: name~'EndDate',
+        name: name ~ '[end]',
+        value: value.end ?? ''
+    }) }}
+
     {% if field.showEndTime %}
         {{ forms.timeField({
             label: 'End time',
