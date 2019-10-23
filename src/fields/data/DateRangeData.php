@@ -15,10 +15,20 @@ class DateRangeData extends BaseObject implements Serializable
 
     public $end;
 
-    public function __construct($value = null, $config = [] )
+    public $isFuture;
+
+    public $isOngoing;
+
+    public $isPast;
+
+
+    public function __construct($value = null, $config = [])
     {
         $this->start = $value['start'];
         $this->end = $value['end'];
+        $this->isFuture = $this->getIsFuture($this->start, $this->end);
+        $this->isOngoing = $this->getIsOngoing($this->start, $this->end);
+        $this->isPast = $this->getIsPast($this->start, $this->end);
         parent::__construct($config);
     }
 
@@ -27,10 +37,60 @@ class DateRangeData extends BaseObject implements Serializable
         return [$this->start, $this->end];
     }
 
+
+    /**
+     * @param \DateTime $start
+     * @param \DateTime $end
+     * @return bool
+     * @throws \Exception
+     */
+    public function getIsFuture(\DateTime $start, \DateTime $end)
+    {
+        $now = new \DateTime();
+        if ($start->format('U') > $now->format('U')) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param \DateTime $start
+     * @param \DateTime $end
+     * @return bool
+     * @throws \Exception
+     */
+    public function getIsOngoing(\DateTime $start, \DateTime $end)
+    {
+        $now = new \DateTime();
+        if (
+            $start->format('U') < $now->format('U')
+            && $end->format('U') > $now->format('U')
+        ) {
+
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param \DateTime $start
+     * @param \DateTime $end
+     * @return bool
+     * @throws \Exception
+     */
+    public function getIsPast(\DateTime $start, \DateTime $end)
+    {
+        $now = new \DateTime();
+        if ($end->format('U') < $now->format('U')) {
+            return true;
+        }
+        return false;
+    }
+
     public static function normalize($value = null, FieldInterface $config)
     {
 
-        if(!is_array($value)) {
+        if (!is_array($value)) {
             $value = Json::decode($value);
         }
 
@@ -45,7 +105,7 @@ class DateRangeData extends BaseObject implements Serializable
         if (!$config->showEndTime) {
             $end->setTime(00, 00, 00);
         }
-        
+
 
         return [
             'start' => $start,
