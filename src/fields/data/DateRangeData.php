@@ -89,9 +89,12 @@ class DateRangeData extends BaseObject implements Serializable
 
     public static function normalize($value = null, FieldInterface $config)
     {
-
         if (!is_array($value)) {
             $value = Json::decode($value);
+        }
+
+        if(!$value['start']['date'] || !$value['end']['date']) {
+            return false;
         }
 
         $start = $value['start'];

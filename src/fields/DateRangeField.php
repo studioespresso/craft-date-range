@@ -87,7 +87,11 @@ class DateRangeField extends Field
         }
 
         $value = DateRangeData::normalize($value, $this);
-        return new DateRangeData($value);
+        if ($value) {
+            return new DateRangeData($value);
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -123,6 +127,11 @@ class DateRangeField extends Field
                 'field' => $this,
             ]
         );
+    }
+
+    public function isValueEmpty($value, ElementInterface $element): bool
+    {
+        return !$value ? true : false;
     }
 
     /**

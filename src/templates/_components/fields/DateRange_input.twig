@@ -16,6 +16,7 @@
 {% import "_includes/forms" as forms %}
 
     {{ forms.dateField({
+        required : field.required,
         label: 'Start date',
         id: name~'StartDate',
         name: name ~ '[start]',
@@ -33,6 +34,7 @@
     {% endif %}
 
     {{ forms.dateField({
+        required : field.required,
         label: 'End date',
         id: name~'EndDate',
         name: name ~ '[end]',
