@@ -4,6 +4,7 @@ namespace studioespresso\daterange\fields\data;
 
 use craft\base\FieldInterface;
 use craft\base\Serializable;
+use craft\helpers\DateTimeHelper;
 use craft\helpers\Json;
 use studioespresso\daterange\fields\DateRangeField;
 use yii\base\BaseObject;
@@ -100,17 +101,20 @@ class DateRangeData extends BaseObject implements Serializable
         }
 
         $start = $value['start'];
-        $start = new \DateTime(isset($start['date']) ? $start['date'] : $start);
         if (!$config->showStartTime) {
+            $start = new \DateTime(isset($start['date']) ? $start['date'] : $start);
             $start->setTime(00, 00, 00);
+        } else {
+            $start = DateTimeHelper::toDateTime($start);
         }
 
         $end = $value['end'];
-        $end = new \DateTime(isset($end['date']) ? $end['date'] : $end);
         if (!$config->showEndTime) {
+            $end = new \DateTime(isset($end['date']) ? $end['date'] : $end);
             $end->setTime(00, 00, 00);
+        } else {
+            $end = DateTimeHelper::toDateTime($end);
         }
-
 
         return [
             'start' => $start,
