@@ -93,7 +93,9 @@ class DateRangeData extends BaseObject implements Serializable
             $value = Json::decode($value);
         }
 
-        if(!$value['start']['date'] || !$value['end']['date']) {
+        if((isset($value['start']['date']) && !$value['start']['date']) ||
+            (isset($value['end']['date']) && !$value['end']['date'])
+        ) {
             return false;
         }
 
