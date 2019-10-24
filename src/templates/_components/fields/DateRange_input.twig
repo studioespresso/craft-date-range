@@ -1,0 +1,68 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Date Range plugin for Craft CMS 3.x
+ *
+ * DateRange Field Input
+ *
+ * @author    Studio Espresso
+ * @copyright Copyright (c) 2019 Studio Espresso
+ * @link      https://studioespresso.co/en
+ * @package   DateRange
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+    {{ forms.dateField({
+        required : field.required,
+        label: 'Start date',
+        id: name~'StartDate',
+        name: name ~ '[start]',
+        value: value.start ?? ''
+    }) }}
+
+    {% if field.showStartTime %}
+        {{ forms.timeField({
+            label: 'Start time',
+            id: name~'StartTime',
+            name: name ~ '[start]',
+            value: value.start ?? ''
+
+        }) }}
+    {% endif %}
+
+    {{ forms.dateField({
+        required : field.required,
+        label: 'End date',
+        id: name~'EndDate',
+        name: name ~ '[end]',
+        value: value.end ?? ''
+    }) }}
+
+    {% if field.showEndTime %}
+        {{ forms.timeField({
+            label: 'End time',
+            id: name~'EndTime',
+            name: name ~ '[end]',
+            value: value.end ?? ''
+
+        }) }}
+    {% endif %}
+
+{% css %}
+
+    [data-type="studioespresso\\daterange\\fields\\DateRangeField"] .field {
+        float: left;
+        width: min-content;
+        margin-right: 20px;
+        margin-bottom: 0px;
+    }
+    [data-type="studioespresso\\daterange\\fields\\DateRangeField"] .field:not(:first-of-type) {
+        margin-top: 0px;
+
+    }
+
+
+{% endcss %}
