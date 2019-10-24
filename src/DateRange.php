@@ -65,7 +65,5 @@ class DateRange extends Plugin
                 $event->types[] = DateRangeField::class;
             }
         );
-
     }
-
 }
