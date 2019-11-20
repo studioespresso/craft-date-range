@@ -27,9 +27,9 @@ class DateRangeData extends BaseObject implements Serializable
     {
         $this->start = $value['start'];
         $this->end = $value['end'];
-        $this->isFuture = $this->getIsFuture($this->start, $this->end);
-        $this->isOngoing = $this->getIsOngoing($this->start, $this->end);
-        $this->isPast = $this->getIsPast($this->start, $this->end);
+        $this->isFuture = $this->getIsFuture();
+        $this->isOngoing = $this->getIsOngoing();
+        $this->isPast = $this->getIsPast();
         parent::__construct($config);
     }
 
@@ -45,10 +45,10 @@ class DateRangeData extends BaseObject implements Serializable
      * @return bool
      * @throws \Exception
      */
-    public function getIsFuture(\DateTime $start, \DateTime $end)
+    public function getIsFuture()
     {
         $now = new \DateTime();
-        if ($start->format('U') > $now->format('U')) {
+        if ($this->start->format('U') > $now->format('U')) {
             return true;
         }
         return false;
@@ -60,15 +60,17 @@ class DateRangeData extends BaseObject implements Serializable
      * @return bool
      * @throws \Exception
      */
-    public function getIsOngoing(\DateTime $start, \DateTime $end)
+    public function getIsOngoing()
     {
+
         $now = new \DateTime();
         if (
-            $start->format('U') < $now->format('U')
-            && $end->format('U') > $now->format('U')
+            $this->start->format('U') < $now->format('U')
+            && $this->end->format('U') > $now->format('U')
         ) {
 
             return true;
+
         }
         return false;
     }
@@ -79,10 +81,10 @@ class DateRangeData extends BaseObject implements Serializable
      * @return bool
      * @throws \Exception
      */
-    public function getIsPast(\DateTime $start, \DateTime $end)
+    public function getIsPast()
     {
         $now = new \DateTime();
-        if ($end->format('U') < $now->format('U')) {
+        if ($this->end->format('U') < $now->format('U')) {
             return true;
         }
         return false;
