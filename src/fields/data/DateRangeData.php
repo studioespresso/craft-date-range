@@ -8,6 +8,7 @@ use craft\helpers\DateTimeHelper;
 use craft\helpers\Json;
 use studioespresso\daterange\fields\DateRangeField;
 use yii\base\BaseObject;
+use yii\i18n\Formatter;
 
 class DateRangeData extends BaseObject implements Serializable
 {
@@ -27,9 +28,9 @@ class DateRangeData extends BaseObject implements Serializable
     {
         $this->start = $value['start'];
         $this->end = $value['end'];
-        $this->isFuture = $this->getIsFuture($this->start, $this->end);
-        $this->isOngoing = $this->getIsOngoing($this->start, $this->end);
-        $this->isPast = $this->getIsPast($this->start, $this->end);
+        $this->isFuture = $this->getIsFuture();
+        $this->isOngoing = $this->getIsOngoing();
+        $this->isPast = $this->getIsPast();
         parent::__construct($config);
     }
 
@@ -45,10 +46,10 @@ class DateRangeData extends BaseObject implements Serializable
      * @return bool
      * @throws \Exception
      */
-    public function getIsFuture(\DateTime $start, \DateTime $end)
+    public function getIsFuture()
     {
         $now = new \DateTime();
-        if ($start->format('U') > $now->format('U')) {
+        if ($this->start->format('U') > $now->format('U')) {
             return true;
         }
         return false;
@@ -60,15 +61,17 @@ class DateRangeData extends BaseObject implements Serializable
      * @return bool
      * @throws \Exception
      */
-    public function getIsOngoing(\DateTime $start, \DateTime $end)
+    public function getIsOngoing()
     {
+
         $now = new \DateTime();
         if (
-            $start->format('U') < $now->format('U')
-            && $end->format('U') > $now->format('U')
+            $this->start->format('U') < $now->format('U')
+            && $this->end->format('U') > $now->format('U')
         ) {
 
             return true;
+
         }
         return false;
     }
@@ -79,10 +82,10 @@ class DateRangeData extends BaseObject implements Serializable
      * @return bool
      * @throws \Exception
      */
-    public function getIsPast(\DateTime $start, \DateTime $end)
+    public function getIsPast()
     {
         $now = new \DateTime();
-        if ($end->format('U') < $now->format('U')) {
+        if ($this->end->format('U') < $now->format('U')) {
             return true;
         }
         return false;
@@ -101,20 +104,10 @@ class DateRangeData extends BaseObject implements Serializable
         }
 
         $start = $value['start'];
-        if (!$config->showStartTime) {
-            $start = new \DateTime(isset($start['date']) ? $start['date'] : $start);
-            $start->setTime(00, 00, 00);
-        } else {
-            $start = DateTimeHelper::toDateTime($start);
-        }
+        $start = DateTimeHelper::toDateTime($start);
 
         $end = $value['end'];
-        if (!$config->showEndTime) {
-            $end = new \DateTime(isset($end['date']) ? $end['date'] : $end);
-            $end->setTime(00, 00, 00);
-        } else {
-            $end = DateTimeHelper::toDateTime($end);
-        }
+        $end = DateTimeHelper::toDateTime($end);
 
         return [
             'start' => $start,
