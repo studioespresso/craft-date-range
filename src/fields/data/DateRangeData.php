@@ -8,6 +8,7 @@ use craft\helpers\DateTimeHelper;
 use craft\helpers\Json;
 use studioespresso\daterange\fields\DateRangeField;
 use yii\base\BaseObject;
+use yii\i18n\Formatter;
 
 class DateRangeData extends BaseObject implements Serializable
 {
@@ -103,20 +104,10 @@ class DateRangeData extends BaseObject implements Serializable
         }
 
         $start = $value['start'];
-        if (!$config->showStartTime) {
-            $start = new \DateTime(isset($start['date']) ? $start['date'] : $start);
-            $start->setTime(00, 00, 00);
-        } else {
-            $start = DateTimeHelper::toDateTime($start);
-        }
+        $start = DateTimeHelper::toDateTime($start);
 
         $end = $value['end'];
-        if (!$config->showEndTime) {
-            $end = new \DateTime(isset($end['date']) ? $end['date'] : $end);
-            $end->setTime(00, 00, 00);
-        } else {
-            $end = DateTimeHelper::toDateTime($end);
-        }
+        $end = DateTimeHelper::toDateTime($end);
 
         return [
             'start' => $start,
