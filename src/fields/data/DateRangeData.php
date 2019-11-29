@@ -39,6 +39,16 @@ class DateRangeData extends BaseObject implements Serializable
         return [$this->start, $this->end];
     }
 
+    public function getFormatted($format = 'd/m/Y', $seperator = ' - ')
+    {
+
+        $string = '';
+        $string .= $this->start->format($format);
+        $string .= $seperator;
+        $string .= $this->end->format($format);
+        return $string;
+    }
+
 
     /**
      * @param \DateTime $start
