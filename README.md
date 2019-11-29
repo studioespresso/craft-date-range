@@ -32,6 +32,7 @@ When you enable either or both time fields, that value will off course be safed.
 
 ## Templating
 When using the field in your template, you have access to both `start` and `end` properties, as well as:
+- `getFormatted()`: which optionally accepts a date(time) format (eg: 'd/m/Y') as the first parameter and a seperator string as the second (eg: ' until ').
 - `isPast`: returns `true` if the `end` property is past the current date & time.
 - `isFuture`: returns `true` if the `start` property is ahead the current date & time.
 - `isOnGoing`: returns `true` if the `start` property is past the current date & time *and* the `end` property is ahead of the current date & time.
