@@ -10,6 +10,7 @@
 
 namespace studioespresso\daterange\fields;
 
+use craft\base\PreviewableFieldInterface;
 use craft\fields\data\ColorData;
 use craft\validators\ColorValidator;
 use studioespresso\daterange\DateRange;
@@ -28,7 +29,7 @@ use craft\helpers\Json;
  * @package   DateRange
  * @since     1.0.0
  */
-class DateRangeField extends Field
+class DateRangeField extends Field implements PreviewableFieldInterface
 {
     // Public Properties
     // =========================================================================
@@ -71,6 +72,36 @@ class DateRangeField extends Field
     public function getContentColumnType(): string
     {
         return Schema::TYPE_STRING;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getTableAttributeHtml($value, ElementInterface $element): string
+    {
+        if (!$value) {
+            return false;
+        }
+        if ($value->start->format('dmyhis') === $value->end->format('dmyhis')) {
+            if($this->getSettings()['showStartTime']) {
+                return $value->start->format('d/m/Y H:i');
+            } else {
+                return $value->start->format('d/m/Y');
+
+            }
+        } else {
+            if($this->getSettings()['showStartTime'] && $this->getSettings()['showEndTime']) {
+                return $value->start->format('d/m/Y H:i') . ' - ' . $value->end->format('d/m/Y H:i');
+            } elseif($this->getSettings()['showStartTime'] && !$this->getSettings()['showEndTime']) {
+                return $value->start->format('d/m/Y H:i') . ' - ' . $value->end->format('d/m/Y');
+            } elseif(!$this->getSettings()['showStartTime'] && $this->getSettings()['showEndTime']) {
+                return $value->start->format('d/m/Y') . ' - ' . $value->end->format('d/m/Y H:i');
+            } else {
+                return $value->start->format('d/m/Y') . ' - ' . $value->end->format('d/m/Y');
+            }
+        }
+
     }
 
     /**
