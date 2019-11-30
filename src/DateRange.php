@@ -10,15 +10,14 @@
 
 namespace studioespresso\daterange;
 
-use studioespresso\daterange\fields\DateRangeField;
-
 use Craft;
 use craft\base\Plugin;
-use craft\services\Plugins;
-use craft\events\PluginEvent;
-use craft\services\Fields;
+use craft\elements\db\EntryQuery;
+use craft\events\DefineBehaviorsEvent;
 use craft\events\RegisterComponentTypesEvent;
-
+use craft\services\Fields;
+use studioespresso\daterange\behaviors\EntryQueryBehavior;
+use studioespresso\daterange\fields\DateRangeField;
 use yii\base\Event;
 
 /**
@@ -27,6 +26,7 @@ use yii\base\Event;
  * @author    Studio Espresso
  * @package   DateRange
  * @since     1.0.0
+ *
  *
  */
 class DateRange extends Plugin
@@ -65,5 +65,13 @@ class DateRange extends Plugin
                 $event->types[] = DateRangeField::class;
             }
         );
+
+
+        if (version_compare(Craft::$app->db->getServerVersion(), "5.7", ">=")) {
+            Event::on(EntryQuery::class, EntryQuery::EVENT_DEFINE_BEHAVIORS, function (DefineBehaviorsEvent $event) {
+                $event->behaviors[$this->id] = EntryQueryBehavior::class;
+            });
+        }
+
     }
 }

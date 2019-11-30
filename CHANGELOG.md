@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.2.0 - 2019-11-30
+### Added
+- ``isPast()``, ``isOnGoing()`` and ``isFuture()`` can now be used in entry queries, passing along the field handle you want to be used to the function. (requires MySQL 5.7 or higher)
+
+
 ## 1.1.0 - 2019-11-29
 ### Added
 - The field can now be displayed on element overview pages in the CP
