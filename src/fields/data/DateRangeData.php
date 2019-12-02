@@ -59,7 +59,7 @@ class DateRangeData extends BaseObject implements Serializable
     public function getIsFuture()
     {
         $now = new \DateTime();
-        if ($this->start->format('U') > $now->format('U')) {
+        if ($this->end->format('U') > $now->format('U')) {
             return true;
         }
         return false;
