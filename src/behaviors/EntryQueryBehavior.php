@@ -60,7 +60,7 @@ class EntryQueryBehavior extends Behavior
         if ($this->field && $this->isFuture) {
             $this->owner->subQuery
                 ->andWhere(Db::parseDateParam(
-                    "JSON_EXTRACT(field_$this->field, '$.start')",
+                    "JSON_EXTRACT(field_$this->field, '$.end')",
                     date('Y-m-d'),
                     '>'
                 ));
