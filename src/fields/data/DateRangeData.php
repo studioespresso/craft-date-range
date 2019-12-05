@@ -27,7 +27,7 @@ class DateRangeData extends BaseObject implements Serializable
     public function __construct($value = null, $config = [])
     {
         $this->start = $value['start'];
-        $this->end = $value['end'];
+        $this->end = $value['end'] ?: $value['start'];
         $this->isFuture = $this->getIsFuture();
         $this->isOngoing = $this->getIsOngoing();
         $this->isPast = $this->getIsPast();
@@ -107,10 +107,13 @@ class DateRangeData extends BaseObject implements Serializable
             $value = Json::decode($value);
         }
 
-        if ((isset($value['start']['date']) && !$value['start']['date']) ||
-            (isset($value['end']['date']) && !$value['end']['date'])
+        if ((isset($value['start']['date']) && !$value['start']['date'])
         ) {
             return false;
+        } else {
+            if (isset($value['end']['date']) && !$value['end']['date']) {
+                $value['end']['date'] = $value['start']['date'];
+            }
         }
 
         $start = $value['start'];
