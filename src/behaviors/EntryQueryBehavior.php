@@ -62,7 +62,7 @@ class EntryQueryBehavior extends Behavior
                 ->andWhere(Db::parseDateParam(
                     "JSON_EXTRACT(field_$this->field, '$.start')",
                     date('Y-m-d'),
-                    '>'
+                    '>='
                 ));
         }
 
