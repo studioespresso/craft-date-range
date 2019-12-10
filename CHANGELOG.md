@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.2.2 - 2019-12-10
+### Fixed
+- Field labels are now translatable
+
+### Added
+- Added french translation of the field labels (Thanks [@ockam](https://github.com/ockam), [#6](https://github.com/studioespresso/craft-date-range/issues/6))
+- Added dutch translations of the field labels 
 
 ## 1.2.1 - 2019-12-02
 ### Added
