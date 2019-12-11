@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.3.0 - Unreleased
+### Fixed
+- `isFuture` on the field value is now based on the start date instead of the end date.
+
 ## 1.2.2 - 2019-12-11
 ### Fixed
 - Field labels are now translatable
