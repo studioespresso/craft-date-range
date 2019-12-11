@@ -24,6 +24,8 @@ class EntryQueryBehavior extends Behavior
 
     public $isOnGoing = false;
 
+    public $includeToday;
+
     /**
      * @inheritdoc
      */
@@ -34,23 +36,26 @@ class EntryQueryBehavior extends Behavior
         ];
     }
 
-    public function isFuture($value)
+    public function isFuture($value, $includeToday = false)
     {
         $this->field = $value;
+        $this->includeToday = $includeToday;
         $this->isFuture = true;
         return $this->owner;
     }
 
-    public function isPast($value)
+    public function isPast($value, $includeToday = false)
     {
         $this->field = $value;
+        $this->includeToday = $includeToday;
         $this->isPast = true;
         return $this->owner;
     }
 
-    public function isOnGoing($value)
+    public function isOnGoing($value, $includeToday = false)
     {
         $this->field = $value;
+        $this->includeToday = $includeToday;
         $this->isOnGoing = true;
         return $this->owner;
     }
@@ -62,7 +67,7 @@ class EntryQueryBehavior extends Behavior
                 ->andWhere(Db::parseDateParam(
                     "JSON_EXTRACT(field_$this->field, '$.start')",
                     date('Y-m-d'),
-                    '>='
+                    $this->includeToday ? '>=' : '>'
                 ));
         }
 
@@ -71,7 +76,7 @@ class EntryQueryBehavior extends Behavior
                 ->andWhere(Db::parseDateParam(
                     "JSON_EXTRACT(field_$this->field, '$.end')",
                     date('Y-m-d'),
-                    '<'
+                    $this->includeToday ? '<=' : '<'
                 ));
         }
 
@@ -80,13 +85,13 @@ class EntryQueryBehavior extends Behavior
                 ->andWhere(Db::parseDateParam(
                     "JSON_EXTRACT(field_$this->field, '$.start')",
                     date('Y-m-d'),
-                    '<='
+                    $this->includeToday ? '<=' : '<'
                 ));
             $this->owner->subQuery
                 ->andWhere(Db::parseDateParam(
                     "JSON_EXTRACT(field_$this->field, '$.end')",
                     date('Y-m-d'),
-                    '>='
+                    $this->includeToday ? '>=' : '>'
                 ));
         }
     }
