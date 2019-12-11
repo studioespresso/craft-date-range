@@ -39,6 +39,21 @@ class DateRangeGenerator implements GeneratorInterface
                 'description' => 'The end date and time',
                 'type' => DateTime::getType(),
             ],
+            'isPast' => [
+                'name' => 'isPast',
+                'description' => 'Wether or not the date range is in the past',
+                'type' => Type::boolean(),
+            ],
+            'isFuture' => [
+                'name' => 'isFuture',
+                'description' => 'Wether or not the date range is in the future',
+                'type' => Type::boolean(),
+            ],
+            'isOnGoing' => [
+                'name' => 'isOnGoing',
+                'description' => 'Wether or not the date range is in ongoing',
+                'type' => Type::boolean(),
+            ],
         ];
         $dateRangeType = GqlEntityRegistry::getEntity($typeName)
             ?: GqlEntityRegistry::createEntity($typeName, new DateRangeType([
@@ -62,6 +77,6 @@ class DateRangeGenerator implements GeneratorInterface
     public static function getName($context = null): string
     {
         /** @var OptimizedImages $context */
-        return $context->handle.'_OptimizedImages';
+        return $context->handle.'_dateRangeField';
     }
 }
