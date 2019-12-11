@@ -4,11 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.2.2 - 2019-12-11
+### Fixed
+- Field labels are now translatable
+- When saving a field with only a start date, we'll now use that as value for the end date as well. [#4](https://github.com/studioespresso/craft-date-range/issues/4)
+
+### Added
+- Added french translation of the field labels (Thanks [@ockam](https://github.com/ockam), [#6](https://github.com/studioespresso/craft-date-range/issues/6))
+- Added dutch translations of the field labels 
+- Added optional `includeToday` parameter to entry query behaviour
 
 ## 1.2.1 - 2019-12-02
 ### Added
 - ``isFuture()`` and ``getIsFuture()`` now use the end date to determine when an event is over
-
 
 ## 1.2.0 - 2019-11-30
 ### Added

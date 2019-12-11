@@ -29,8 +29,20 @@ Since a PHP ``DateTime`` object also has a time value, wether you entered on or 
 When you enable either or both time fields, that value will off course be safed. For fields that don't have time options set, ``00:00:00`` will get saved.
 
 
-
 ## Templating
+
+### Element querries
+⚠️ Using date range fields in your entry querries is possible but requires the site to be running **MySQL 5.7 or highter**.
+
+Example:
+
+```twig
+{% set events = craft.entries.section('events').isFuture('dateRangeFieldHandle')  %}
+```
+
+The plugin includes `isOnGoing()`, `isPast()` and `isFuture()` query behaviors. You can optionally pass `true` as a second argument to the query to make it include events that happen today in future/past/onGoing querries. 
+
+### Field values
 When using the field in your template, you have access to both `start` and `end` properties, as well as:
 - `getFormatted()`: which optionally accepts a date(time) format (eg: 'd/m/Y') as the first parameter and a seperator string as the second (eg: ' until ').
 - `isPast`: returns `true` if the `end` property is past the current date & time.
