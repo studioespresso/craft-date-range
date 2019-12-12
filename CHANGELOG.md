@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.3.0 - Unreleased
+## 2.0.0 - 2019-12-12
+### Added
+- Full support for Craft's GraphQL API. ([#8](https://github.com/studioespresso/craft-date-range/issues/8))
 ### Fixed
 - `isFuture` on the field value is now based on the start date instead of the end date.
 
