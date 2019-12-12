@@ -49,4 +49,26 @@ When using the field in your template, you have access to both `start` and `end`
 - `isFuture`: returns `true` if the `start` property is ahead the current date & time.
 - `isOnGoing`: returns `true` if the `start` property is past the current date & time *and* the `end` property is ahead of the current date & time.
 
+## GraphQL
+The field has full support for Craft's GraphQL api, which was added in Craft CMS 3.3
+You have access to the same properties as you do in Twig, and you can also use Craft's ``@formatDateTime`` to change the date formats.  
+
+```graphql
+query{
+  entries(section: "events") {
+    title
+    ... on events_events_Entry {
+      dateRange {
+        start
+        end @formatDateTime(format: "d M Y")
+        isPast
+        isOnGoing
+        isFuture
+      }
+    }
+  }
+}
+```
+----
+
 Brought to you by [Studio Espresso](https://studioespresso.co/en)
