@@ -58,7 +58,7 @@ query{
   entries(section: "events") {
     title
     ... on events_events_Entry {
-      dateRange {
+      dateRangeFieldHandle {
         start
         end @formatDateTime(format: "d M Y")
         isPast
