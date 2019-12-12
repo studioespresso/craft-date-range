@@ -10,19 +10,15 @@
 
 namespace studioespresso\daterange\fields;
 
-use craft\base\PreviewableFieldInterface;
-use craft\fields\data\ColorData;
-use craft\validators\ColorValidator;
-use studioespresso\daterange\DateRange;
-use studioespresso\daterange\assetbundles\daterangefield\DateRangeFieldAsset;
-
 use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
+use craft\base\PreviewableFieldInterface;
 use craft\helpers\Db;
+use studioespresso\daterange\assetbundles\daterangefield\DateRangeFieldAsset;
 use studioespresso\daterange\fields\data\DateRangeData;
+use studioespresso\daterange\gql\types\generators\DateRangeGenerator;
 use yii\db\Schema;
-use craft\helpers\Json;
 
 /**
  * @author    Studio Espresso
@@ -102,6 +98,17 @@ class DateRangeField extends Field implements PreviewableFieldInterface
             }
         }
 
+    }
+
+    public function getContentGqlType()
+    {
+        $typeArray = DateRangeGenerator::generateTypes($this);
+
+        return [
+            'name' => $this->handle,
+            'description' => 'Date Range field',
+            'type' => array_shift($typeArray),
+        ];
     }
 
     /**

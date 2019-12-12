@@ -31,8 +31,8 @@ When you enable either or both time fields, that value will off course be safed.
 
 ## Templating
 
-### Element querries
-⚠️ Using date range fields in your entry querries is possible but requires the site to be running **MySQL 5.7 or highter**.
+### Element queries
+⚠️ Using date range fields in your entry queries is possible but requires the site to be running **MySQL 5.7 or highter**.
 
 Example:
 
@@ -40,7 +40,7 @@ Example:
 {% set events = craft.entries.section('events').isFuture('dateRangeFieldHandle')  %}
 ```
 
-The plugin includes `isOnGoing()`, `isPast()` and `isFuture()` query behaviors. You can optionally pass `true` as a second argument to the query to make it include events that happen today in future/past/onGoing querries. 
+The plugin includes `isOnGoing()`, `isPast()` and `isFuture()` query behaviors. You can optionally pass `true` as a second argument to the query to make it include events that happen today in future/past/onGoing queries. 
 
 ### Field values
 When using the field in your template, you have access to both `start` and `end` properties, as well as:
@@ -48,5 +48,27 @@ When using the field in your template, you have access to both `start` and `end`
 - `isPast`: returns `true` if the `end` property is past the current date & time.
 - `isFuture`: returns `true` if the `start` property is ahead the current date & time.
 - `isOnGoing`: returns `true` if the `start` property is past the current date & time *and* the `end` property is ahead of the current date & time.
+
+## GraphQL
+The field has full support for Craft's GraphQL api, which was added in Craft CMS 3.3
+You have access to the same properties as you do in Twig, and you can also use Craft's ``@formatDateTime`` to change the date formats.  
+
+```graphql
+query{
+  entries(section: "events") {
+    title
+    ... on events_events_Entry {
+      dateRangeFieldHandle {
+        start
+        end @formatDateTime(format: "d M Y")
+        isPast
+        isOnGoing
+        isFuture
+      }
+    }
+  }
+}
+```
+----
 
 Brought to you by [Studio Espresso](https://studioespresso.co/en)
