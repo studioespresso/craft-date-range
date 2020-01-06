@@ -14,7 +14,11 @@ use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
+use craft\helpers\DateTimeHelper;
 use craft\helpers\Db;
+use craft\helpers\Html;
+use craft\helpers\Localization;
+use craft\i18n\Locale;
 use studioespresso\daterange\assetbundles\daterangefield\DateRangeFieldAsset;
 use studioespresso\daterange\fields\data\DateRangeData;
 use studioespresso\daterange\gql\types\generators\DateRangeGenerator;
@@ -76,25 +80,29 @@ class DateRangeField extends Field implements PreviewableFieldInterface
      */
     public function getTableAttributeHtml($value, ElementInterface $element): string
     {
+        $formatter = Craft::$app->getFormatter();
         if (!$value) {
             return false;
         }
         if ($value->start->format('dmyhis') === $value->end->format('dmyhis')) {
-            if($this->getSettings()['showStartTime']) {
-                return $value->start->format('d/m/Y H:i');
+            if ($this->getSettings()['showStartTime']) {
+                return $formatter->asDatetime($value->start, Locale::LENGTH_SHORT);
             } else {
-                return $value->start->format('d/m/Y');
-
+                return $formatter->asDate($value->start, Locale::LENGTH_SHORT);
             }
         } else {
-            if($this->getSettings()['showStartTime'] && $this->getSettings()['showEndTime']) {
-                return $value->start->format('d/m/Y H:i') . ' - ' . $value->end->format('d/m/Y H:i');
-            } elseif($this->getSettings()['showStartTime'] && !$this->getSettings()['showEndTime']) {
-                return $value->start->format('d/m/Y H:i') . ' - ' . $value->end->format('d/m/Y');
-            } elseif(!$this->getSettings()['showStartTime'] && $this->getSettings()['showEndTime']) {
-                return $value->start->format('d/m/Y') . ' - ' . $value->end->format('d/m/Y H:i');
+            if ($this->getSettings()['showStartTime'] && $this->getSettings()['showEndTime']) {
+                return $formatter->asDatetime($value->start, Locale::LENGTH_SHORT) . ' - ' .
+                    $formatter->asDatetime($value->end, Locale::LENGTH_SHORT);
+            } elseif ($this->getSettings()['showStartTime'] && !$this->getSettings()['showEndTime']) {
+                return $formatter->asDatetime($value->start, Locale::LENGTH_SHORT) . ' - ' .
+                    $formatter->asDate($value->end, Locale::LENGTH_SHORT);
+            } elseif (!$this->getSettings()['showStartTime'] && $this->getSettings()['showEndTime']) {
+                return $formatter->asDate($value->start, Locale::LENGTH_SHORT) . ' - ' .
+                    $formatter->asDatetime($value->end, Locale::LENGTH_SHORT);
             } else {
-                return $value->start->format('d/m/Y') . ' - ' . $value->end->format('d/m/Y');
+                return $formatter->asDate($value->start, Locale::LENGTH_SHORT) . ' - ' .
+                    $formatter->asDate($value->end, Locale::LENGTH_SHORT);
             }
         }
 
