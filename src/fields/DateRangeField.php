@@ -124,7 +124,7 @@ class DateRangeField extends Field implements PreviewableFieldInterface
      */
     public function normalizeValue($value, ElementInterface $element = null)
     {
-        if (!$value || $this->isFresh($element)) {
+        if (!$value) {
             return null;
         }
 
@@ -146,7 +146,7 @@ class DateRangeField extends Field implements PreviewableFieldInterface
      */
     public function serializeValue($value, ElementInterface $element = null)
     {
-        if (!$value || $this->isFresh($element)) {
+        if (!$value) {
             return null;
         }
 
