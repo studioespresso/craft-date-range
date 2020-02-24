@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.0.2 - 2020-01-24
+### Fixed
+- Fixed an issue where the field wasn't working from the quick post widget ([#14](https://github.com/studioespresso/craft-date-range/issues/14))
+
+
 ## 2.0.1 - 2020-01-06
 ### Added
 - When the field is added to element overview, the values are now formatted based on the current user's locale ([#10](https://github.com/studioespresso/craft-date-range/issues/10))
