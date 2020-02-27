@@ -49,6 +49,13 @@ When using the field in your template, you have access to both `start` and `end`
 - `isFuture`: returns `true` if the `start` property is ahead the current date & time.
 - `isOnGoing`: returns `true` if the `start` property is past the current date & time *and* the `end` property is ahead of the current date & time.
 
+### `getFormatted()`
+When using the ``getFormatted()`` function, you can pass paramters in 2 ways:
+1) a date format and a separator string (eg: ``entry.dateRangeHandle.formatted("d/m/Y Hi", "until"|t)``)  
+2) an array with a ``date`` and a ``time`` key and a separator string (eg: ``entry.dateRangeHandle.formatted({ date: 'd/m/Y', time: 'H:i:s'}, 'tot'|t)``)
+
+With this second option, the field can output date and time seperatly and when the start and end dates are the same, it will only ouput one, using the separate time formates for the start and end times (eg `` 30/04/2020 11:00 until 16:00`` )
+
 ## GraphQL
 The field has full support for Craft's GraphQL api, which was added in Craft CMS 3.3
 You have access to the same properties as you do in Twig, and you can also use Craft's ``@formatDateTime`` to change the date formats.  
