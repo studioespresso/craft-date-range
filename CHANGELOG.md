@@ -4,10 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 2.0.2 - 2020-01-24
+## 2.1.0 - 2020-02-27
+### Added
+- Added more options to the ``formatted()`` option and documentation on how to use them ([#15](https://github.com/studioespresso/craft-date-range/issues/15))
+
+## 2.0.2 - 2020-02-24
 ### Fixed
 - Fixed an issue where the field wasn't working from the quick post widget ([#14](https://github.com/studioespresso/craft-date-range/issues/14))
-
 
 ## 2.0.1 - 2020-01-06
 ### Added
