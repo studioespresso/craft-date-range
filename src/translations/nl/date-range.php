@@ -21,7 +21,7 @@
  * @since     0.0.1
  */
 return [
-    "Start date" => "Startdatum",
+    "Start date" => "Begindatum",
     "End date" => "Einddatum",
     "Start time" => "Beginuur",
     "End time" => "Einduur",
