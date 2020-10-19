@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.1.1 - 2020-10-19
+### Added
+- ``formatted()`` now outputs dates in the current site locale
+
+
 ## 2.1.0 - 2020-02-27
 ### Added
 - Added more options to the ``formatted()`` option and documentation on how to use them ([#15](https://github.com/studioespresso/craft-date-range/issues/15))

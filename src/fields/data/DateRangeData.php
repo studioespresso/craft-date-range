@@ -2,10 +2,12 @@
 
 namespace studioespresso\daterange\fields\data;
 
+use Craft;
 use craft\base\FieldInterface;
 use craft\base\Serializable;
 use craft\helpers\DateTimeHelper;
 use craft\helpers\Json;
+use craft\i18n\Locale;
 use studioespresso\daterange\fields\DateRangeField;
 use yii\base\BaseObject;
 use yii\i18n\Formatter;
@@ -39,13 +41,13 @@ class DateRangeData extends BaseObject implements Serializable
         return [$this->start, $this->end];
     }
 
-    public function getFormatted($format = 'd/m/Y', $seperator = ' - ')
+    public function getFormatted($format = 'd/m/Y', $seperator = ' - ', $locale = null)
     {
-        if(is_array($format)) {
-            if(isset($format['date'])) {
+        if (is_array($format)) {
+            if (isset($format['date'])) {
                 $dateFormat = $format['date'];
             }
-            if(isset($format['time'])) {
+            if (isset($format['time'])) {
                 $timeFormat = $format['time'];
             }
             $format = ($dateFormat ? $dateFormat : '') . ' ' . ($timeFormat ? $timeFormat : '');
@@ -53,16 +55,18 @@ class DateRangeData extends BaseObject implements Serializable
             $format = $format;
         }
         $string = '';
-        if($this->start->format('dmy') === $this->end->format('dmy') && isset($timeFormat)) {
-            $string .= $this->start->format($dateFormat);
+
+        $formatter = $locale ? (new Locale($locale))->getFormatter() : Craft::$app->getFormatter();
+        if ($this->start->format('dmy') === $this->end->format('dmy') && isset($timeFormat)) {
+            $string .= $formatter->asDate($this->start, "php:$dateFormat");
             $string .= " ";
-            $string .= $this->start->format($timeFormat);
+            $string .= $formatter->asTime($this->start, "php:$timeFormat");
             $string .= " " . trim($seperator) . " ";
-            $string .= $this->end->format($timeFormat);
+            $string .= $formatter->asTime($this->end, "php:$timeFormat");
         } else {
-            $string .= $this->start->format($format);
+            $string .= $formatter->asDate($this->start, "php:$dateFormat");
             $string .= " " . trim($seperator) . " ";
-            $string .= $this->end->format($format);
+            $string .= $formatter->asDate($this->start, "php:$dateFormat");
         }
         return $string;
     }
