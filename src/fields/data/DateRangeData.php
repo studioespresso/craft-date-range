@@ -66,7 +66,7 @@ class DateRangeData extends BaseObject implements Serializable
         } else {
             $string .= $formatter->asDate($this->start, "php:$dateFormat");
             $string .= " " . trim($seperator) . " ";
-            $string .= $formatter->asDate($this->start, "php:$dateFormat");
+            $string .= $formatter->asDate($this->end, "php:$dateFormat");
         }
         return $string;
     }
