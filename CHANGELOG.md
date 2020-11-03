@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.1.2 - 2020-11-03
+### Fixex 
+- Fixed an issue with ``formatted()`` where the start date was used instead of the end date.
+
+
 ## 2.1.1 - 2020-10-19
 ### Added
 - ``formatted()`` now outputs dates in the current site locale
