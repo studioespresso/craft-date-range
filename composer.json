@@ -2,7 +2,7 @@
     "name": "studioespresso/craft-date-range",
     "description": "Date range field",
     "type": "craft-plugin",
-    "version": "2.1.2",
+    "version": "2.2.0",
     "keywords": [
         "craft",
         "cms",
@@ -36,5 +36,11 @@
         "hasCpSection": false,
         "changelogUrl": "https://raw.githubusercontent.com/studioespresso/craft-date-range/master/CHANGELOG.md",
         "class": "studioespresso\\daterange\\DateRange"
-    }
+    },
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/janhenckens"
+        }
+    ]
 }

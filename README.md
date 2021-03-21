@@ -20,6 +20,7 @@ To install the plugin, follow these instructions.
 The following options can be set on the field:
 - Show a start time field
 - Show an end time field
+- End date should be after or later thand the start date
 
 When the field is set to required, both start & end date (and if enabled time) will be required. 
 

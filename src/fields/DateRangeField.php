@@ -22,6 +22,7 @@ use craft\i18n\Locale;
 use studioespresso\daterange\assetbundles\daterangefield\DateRangeFieldAsset;
 use studioespresso\daterange\fields\data\DateRangeData;
 use studioespresso\daterange\gql\types\generators\DateRangeGenerator;
+use studioespresso\daterange\validators\EndDateValidator;
 use yii\db\Schema;
 
 /**
@@ -42,6 +43,8 @@ class DateRangeField extends Field implements PreviewableFieldInterface
     public $showStartTime = false;
 
     public $showEndTime = false;
+
+    public $endAfterStart = true;
 
     // Static Methods
     // =========================================================================
@@ -118,6 +121,16 @@ class DateRangeField extends Field implements PreviewableFieldInterface
             'type' => array_shift($typeArray),
         ];
     }
+
+    public function getElementValidationRules(): array
+    {
+
+        if($this->endAfterStart) {
+            return [EndDateValidator::class];
+        }
+        return [];
+    }
+
 
     /**
      * @inheritdoc
