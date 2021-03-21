@@ -3,9 +3,16 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
+## 2.2.0 - 2021-03-21
+### Added
+- Add a field option and validtor to force the end date later than start date ([#23](https://github.com/studioespresso/craft-date-range/issues/23))
+
+### Fixed
+- Fixed an issue with ``formatted()`` when the field didn't use time fields ([#22](https://github.com/studioespresso/craft-date-range/issues/22))
+
 
 ## 2.1.2 - 2020-11-03
-### Fixex 
+### Fixed 
 - Fixed an issue with ``formatted()`` where the start date was used instead of the end date.
 
 
