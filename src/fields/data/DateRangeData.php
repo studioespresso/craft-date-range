@@ -55,9 +55,11 @@ class DateRangeData extends BaseObject implements Serializable
             $format = $format;
         }
         $string = '';
-
         $formatter = $locale ? (new Locale($locale))->getFormatter() : Craft::$app->getFormatter();
-        if ($this->start->format('dmy') === $this->end->format('dmy') && isset($timeFormat)) {
+
+        if($this->start->format('U') === $this->end->format('U')) {
+           $string = $formatter->asDate($this->start, "php:$format");
+        }  elseif ($this->start->format('dmy') === $this->end->format('dmy') && isset($timeFormat)) {
             $string .= $formatter->asDate($this->start, "php:$dateFormat");
             $string .= " ";
             $string .= $formatter->asTime($this->start, "php:$timeFormat");
