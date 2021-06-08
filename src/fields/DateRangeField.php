@@ -14,6 +14,7 @@ use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
+use craft\base\SortableFieldInterface;
 use craft\helpers\DateTimeHelper;
 use craft\helpers\Db;
 use craft\helpers\Html;
@@ -30,7 +31,7 @@ use yii\db\Schema;
  * @package   DateRange
  * @since     1.0.0
  */
-class DateRangeField extends Field implements PreviewableFieldInterface
+class DateRangeField extends Field implements PreviewableFieldInterface, SortableFieldInterface
 {
     // Public Properties
     // =========================================================================
@@ -108,9 +109,8 @@ class DateRangeField extends Field implements PreviewableFieldInterface
                     $formatter->asDate($value->end, Locale::LENGTH_SHORT);
             }
         }
-
     }
-
+    
     public function getContentGqlType()
     {
         $typeArray = DateRangeGenerator::generateTypes($this);
