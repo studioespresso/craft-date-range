@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
+
+## 2.2.1 - 2021-06-08
+### Added
+- Elements can now be sorted by date rang fields
+
 ## 2.2.0 - 2021-03-21
 ### Added
 - Add a field option and validtor to force the end date later than start date ([#23](https://github.com/studioespresso/craft-date-range/issues/23))
