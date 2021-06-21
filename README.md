@@ -33,7 +33,7 @@ When you enable either or both time fields, that value will off course be safed.
 ## Templating
 
 ### Element queries
-⚠️ Using date range fields in your entry queries is possible but requires the site to be running **MySQL 5.7 or highter**.
+⚠️ Using date range fields in your entry queries is possible but requires the site to be running **MySQL 5.7 or later** or **PostgreSQL 9.3 or later**.
 
 Example:
 

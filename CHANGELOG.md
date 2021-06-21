@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.3.0 - 2021-06-21
+### Added
+- PostgreSQL support
+
 ## 2.2.1 - 2021-06-08
 ### Added
 - Elements can now be sorted by date rang fields
