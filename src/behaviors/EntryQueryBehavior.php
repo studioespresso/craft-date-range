@@ -62,7 +62,7 @@ class EntryQueryBehavior extends Behavior
 
     public function onAfterPrepare()
     {
-        if (Craft::$app->db->getDriverName() === 'pgsql') {
+        if (Craft::$app->db->getIsPgsql()) {
             if ($this->field && $this->isFuture) {
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
@@ -93,7 +93,7 @@ class EntryQueryBehavior extends Behavior
                         $this->includeToday ? '>=' : '>'
                     ));
             }
-        } else {
+        } elseif(Craft::$app->db->getIsMysql()) {
             if ($this->field && $this->isFuture) {
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
