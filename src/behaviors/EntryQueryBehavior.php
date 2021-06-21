@@ -1,8 +1,8 @@
 <?php
 
-
 namespace studioespresso\daterange\behaviors;
 
+use Craft;
 use craft\elements\db\ElementQuery;
 use craft\elements\db\EntryQuery;
 use craft\helpers\Db;
@@ -62,37 +62,70 @@ class EntryQueryBehavior extends Behavior
 
     public function onAfterPrepare()
     {
-        if ($this->field && $this->isFuture) {
-            $this->owner->subQuery
-                ->andWhere(Db::parseDateParam(
-                    "JSON_EXTRACT(field_$this->field, '$.start')",
-                    date('Y-m-d'),
-                    $this->includeToday ? '>=' : '>'
-                ));
-        }
+        if (Craft::$app->db->getIsPgsql()) {
+            if ($this->field && $this->isFuture) {
+                $this->owner->subQuery
+                    ->andWhere(Db::parseDateParam(
+                        '"field_dateRange"::json->>\'start\'',
+                        date('Y-m-d'),
+                        $this->includeToday ? '>=' : '>'
+                    ));
+            }
+            if ($this->field && $this->isPast) {
+                $this->owner->subQuery
+                    ->andWhere(Db::parseDateParam(
+                        '"field_dateRange"::json->>\'end\'',
+                        date('Y-m-d'),
+                        $this->includeToday ? '<=' : '<'
+                    ));
+            }
+            if ($this->field && $this->isOnGoing) {
+                $this->owner->subQuery
+                    ->andWhere(Db::parseDateParam(
+                        '"field_dateRange"::json->>\'start\'',
+                        date('Y-m-d'),
+                        $this->includeToday ? '<=' : '<'
+                    ));
+                $this->owner->subQuery
+                    ->andWhere(Db::parseDateParam(
+                        '"field_dateRange"::json->>\'end\'',
+                        date('Y-m-d'),
+                        $this->includeToday ? '>=' : '>'
+                    ));
+            }
+        } elseif(Craft::$app->db->getIsMysql()) {
+            if ($this->field && $this->isFuture) {
+                $this->owner->subQuery
+                    ->andWhere(Db::parseDateParam(
+                        "JSON_EXTRACT(field_$this->field, '$.start')",
+                        date('Y-m-d'),
+                        $this->includeToday ? '>=' : '>'
+                    ));
+            }
 
-        if ($this->field && $this->isPast) {
-            $this->owner->subQuery
-                ->andWhere(Db::parseDateParam(
-                    "JSON_EXTRACT(field_$this->field, '$.end')",
-                    date('Y-m-d'),
-                    $this->includeToday ? '<=' : '<'
-                ));
-        }
+            if ($this->field && $this->isPast) {
+                $this->owner->subQuery
+                    ->andWhere(Db::parseDateParam(
+                        "JSON_EXTRACT(field_$this->field, '$.end')",
+                        date('Y-m-d'),
+                        $this->includeToday ? '<=' : '<'
+                    ));
+            }
 
-        if ($this->field && $this->isOnGoing) {
-            $this->owner->subQuery
-                ->andWhere(Db::parseDateParam(
-                    "JSON_EXTRACT(field_$this->field, '$.start')",
-                    date('Y-m-d'),
-                    $this->includeToday ? '<=' : '<'
-                ));
-            $this->owner->subQuery
-                ->andWhere(Db::parseDateParam(
-                    "JSON_EXTRACT(field_$this->field, '$.end')",
-                    date('Y-m-d'),
-                    $this->includeToday ? '>=' : '>'
-                ));
+            if ($this->field && $this->isOnGoing) {
+                $this->owner->subQuery
+                    ->andWhere(Db::parseDateParam(
+                        "JSON_EXTRACT(field_$this->field, '$.start')",
+                        date('Y-m-d'),
+                        $this->includeToday ? '<=' : '<'
+                    ));
+                $this->owner->subQuery
+                    ->andWhere(Db::parseDateParam(
+                        "JSON_EXTRACT(field_$this->field, '$.end')",
+                        date('Y-m-d'),
+                        $this->includeToday ? '>=' : '>'
+                    ));
+            }
         }
     }
 }

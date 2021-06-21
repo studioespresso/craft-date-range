@@ -66,8 +66,10 @@ class DateRange extends Plugin
             }
         );
 
-
-        if (version_compare(Craft::$app->db->getServerVersion(), "5.7", ">=")) {
+        if (
+            Craft::$app->db->getIsMysql() ||
+            (Craft::$app->db->getIsPgsql() &&  version_compare(Craft::$app->db->getServerVersion(), "9.3", ">="))
+        ) {
             Event::on(EntryQuery::class, EntryQuery::EVENT_DEFINE_BEHAVIORS, function (DefineBehaviorsEvent $event) {
                 $event->behaviors[$this->id] = EntryQueryBehavior::class;
             });
