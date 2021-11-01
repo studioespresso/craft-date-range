@@ -5,6 +5,7 @@ namespace studioespresso\daterange\behaviors;
 use Craft;
 use craft\elements\db\ElementQuery;
 use craft\elements\db\EntryQuery;
+use craft\errors\InvalidFieldException;
 use craft\helpers\Db;
 use yii\base\Behavior;
 
@@ -16,7 +17,11 @@ use yii\base\Behavior;
 class EntryQueryBehavior extends Behavior
 {
 
+    public $handle;
+
     public $field = false;
+
+    public $columnSuffix = '';
 
     public $isFuture = false;
 
@@ -38,7 +43,7 @@ class EntryQueryBehavior extends Behavior
 
     public function isFuture($value, $includeToday = false)
     {
-        $this->field = $value;
+        $this->handle = $value;
         $this->includeToday = $includeToday;
         $this->isFuture = true;
         return $this->owner;
@@ -46,7 +51,7 @@ class EntryQueryBehavior extends Behavior
 
     public function isPast($value, $includeToday = false)
     {
-        $this->field = $value;
+        $this->handle = $value;
         $this->includeToday = $includeToday;
         $this->isPast = true;
         return $this->owner;
@@ -54,7 +59,7 @@ class EntryQueryBehavior extends Behavior
 
     public function isOnGoing($value, $includeToday = false)
     {
-        $this->field = $value;
+        $this->handle = $value;
         $this->includeToday = $includeToday;
         $this->isOnGoing = true;
         return $this->owner;
@@ -62,11 +67,24 @@ class EntryQueryBehavior extends Behavior
 
     public function onAfterPrepare()
     {
+        if ($this->handle) {
+
+            $field = Craft::$app->getFields()->getFieldByHandle($this->handle);
+            if (!$field) {
+                throw new InvalidFieldException("Field '{$this->handle}' not found");
+            }
+
+            $this->field = $field;
+            if ($this->field->columnSuffix) {
+                $this->columnSuffix = '_' . $this->field->columnSuffix;
+            }
+        }
+
         if (Craft::$app->db->getIsPgsql()) {
             if ($this->field && $this->isFuture) {
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
-                        '"field_dateRange"::json->>\'start\'',
+                        '"field_'. $this->field .$this->columnSuffix . '"::json->>\'start\'',
                         date('Y-m-d'),
                         $this->includeToday ? '>=' : '>'
                     ));
@@ -74,7 +92,7 @@ class EntryQueryBehavior extends Behavior
             if ($this->field && $this->isPast) {
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
-                        '"field_dateRange"::json->>\'end\'',
+                        '"field_'. $this->field .$this->columnSuffix . '"::json->>\'end\'',
                         date('Y-m-d'),
                         $this->includeToday ? '<=' : '<'
                     ));
@@ -82,22 +100,22 @@ class EntryQueryBehavior extends Behavior
             if ($this->field && $this->isOnGoing) {
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
-                        '"field_dateRange"::json->>\'start\'',
+                        '"field_'. $this->field .$this->columnSuffix . '"::json->>\'start\'',
                         date('Y-m-d'),
                         $this->includeToday ? '<=' : '<'
                     ));
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
-                        '"field_dateRange"::json->>\'end\'',
+                        '"field_'. $this->field .$this->columnSuffix . '"::json->>\'end\'',
                         date('Y-m-d'),
                         $this->includeToday ? '>=' : '>'
                     ));
             }
-        } elseif(Craft::$app->db->getIsMysql()) {
+        } elseif (Craft::$app->db->getIsMysql()) {
             if ($this->field && $this->isFuture) {
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
-                        "JSON_EXTRACT(field_$this->field, '$.start')",
+                        "JSON_EXTRACT(field_$this->field$this->columnSuffix, '$.start')",
                         date('Y-m-d'),
                         $this->includeToday ? '>=' : '>'
                     ));
@@ -106,7 +124,7 @@ class EntryQueryBehavior extends Behavior
             if ($this->field && $this->isPast) {
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
-                        "JSON_EXTRACT(field_$this->field, '$.end')",
+                        "JSON_EXTRACT(field_$this->field$this->columnSuffix, '$.end')",
                         date('Y-m-d'),
                         $this->includeToday ? '<=' : '<'
                     ));
@@ -115,13 +133,13 @@ class EntryQueryBehavior extends Behavior
             if ($this->field && $this->isOnGoing) {
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
-                        "JSON_EXTRACT(field_$this->field, '$.start')",
+                        "JSON_EXTRACT(field_$this->field$this->columnSuffix, '$.start')",
                         date('Y-m-d'),
                         $this->includeToday ? '<=' : '<'
                     ));
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
-                        "JSON_EXTRACT(field_$this->field, '$.end')",
+                        "JSON_EXTRACT(field_$this->field$this->columnSuffix, '$.end')",
                         date('Y-m-d'),
                         $this->includeToday ? '>=' : '>'
                     ));
