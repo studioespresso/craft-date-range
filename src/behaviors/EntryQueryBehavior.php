@@ -43,24 +43,24 @@ class EntryQueryBehavior extends Behavior
 
     public function isFuture($value, $includeToday = false)
     {
-        $this->handle = $value;
-        $this->includeToday = $includeToday;
+        $this->handle = is_array($value) ? $value[0] : $value;
+        $this->includeToday = is_array($value) ? $value[1] : $includeToday;
         $this->isFuture = true;
         return $this->owner;
     }
 
     public function isPast($value, $includeToday = false)
     {
-        $this->handle = $value;
-        $this->includeToday = $includeToday;
+        $this->handle = is_array($value) ? $value[0] : $value;
+        $this->includeToday = is_array($value) ? $value[1] : $includeToday;
         $this->isPast = true;
         return $this->owner;
     }
 
     public function isOnGoing($value, $includeToday = false)
     {
-        $this->handle = $value;
-        $this->includeToday = $includeToday;
+        $this->handle = is_array($value) ? $value[0] : $value;
+        $this->includeToday = is_array($value) ? $value[1] : $includeToday;
         $this->isOnGoing = true;
         return $this->owner;
     }

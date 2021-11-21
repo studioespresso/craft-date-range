@@ -63,7 +63,10 @@ You have access to the same properties as you do in Twig, and you can also use C
 
 ```graphql
 query{
-  entries(section: "events") {
+  entries(
+   section: "events",
+   isFuture: ["dateRangeFieldHandle", true]
+  ) {
     title
     ... on events_events_Entry {
       dateRangeFieldHandle {

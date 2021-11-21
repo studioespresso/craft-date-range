@@ -4,10 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.4.0
+### Added
+- Added GraphQL query arguments for isFuture, isCurrent and isPast. Thanks [MrHesus](https://github.com/MrHesus)! ([#25](https://github.com/studioespresso/craft-date-range/issues/25) & [#28](https://github.com/studioespresso/craft-date-range/pull/28))
+
 ## 2.3.2 - 2021-11-03
 ### Fixed
 - Use field handle instead of name in EntryQueryBehavior ([#26](https://github.com/studioespresso/craft-date-range/issues/26))
-
 
 ## 2.3.1 - 2021-11-01
 ### Fixed
