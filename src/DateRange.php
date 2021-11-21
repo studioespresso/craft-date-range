@@ -15,9 +15,12 @@ use craft\base\Plugin;
 use craft\elements\db\EntryQuery;
 use craft\events\DefineBehaviorsEvent;
 use craft\events\RegisterComponentTypesEvent;
+use craft\events\RegisterGqlQueriesEvent;
 use craft\services\Fields;
+use craft\services\Gql;
 use studioespresso\daterange\behaviors\EntryQueryBehavior;
 use studioespresso\daterange\fields\DateRangeField;
+use studioespresso\daterange\gql\arguments\EntriesArguments;
 use yii\base\Event;
 
 /**
@@ -75,5 +78,18 @@ class DateRange extends Plugin
             });
         }
 
+        Event::on(
+            Gql::class,
+            Gql::EVENT_REGISTER_GQL_QUERIES,
+            function (RegisterGqlQueriesEvent $event) {
+                // Add isFuture, isOngoing, isPast to entry query arguments
+                $arguments = EntriesArguments::getArguments();
+
+                // Only update the args key
+                $event->queries['entries']['args'] = $arguments;
+                $event->queries['entryCount']['args'] = $arguments;
+                $event->queries['entry']['args'] = $arguments;
+            }
+        );
     }
 }
