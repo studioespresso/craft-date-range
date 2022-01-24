@@ -64,7 +64,7 @@ class DateRangeField extends Field implements PreviewableFieldInterface, Sortabl
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         $rules = parent::rules();
         return $rules;
@@ -177,7 +177,7 @@ class DateRangeField extends Field implements PreviewableFieldInterface, Sortabl
     /**
      * @inheritdoc
      */
-    public function getSettingsHtml()
+    public function getSettingsHtml(): ?string
     {
         // Render the settings template
         return Craft::$app->getView()->renderTemplate(
