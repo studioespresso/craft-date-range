@@ -4,7 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 2.4.0
+## 2.5.0 - 2022-02-28
+### Added
+- Added ``isNotPast`` option ([#31](https://github.com/studioespresso/craft-date-range/issues/31))
+
+
+## 2.4.0 - 2021-11-21
 ### Added
 - Added GraphQL query arguments for isFuture, isCurrent and isPast. Thanks [MrHesus](https://github.com/MrHesus)! ([#25](https://github.com/studioespresso/craft-date-range/issues/25) & [#28](https://github.com/studioespresso/craft-date-range/pull/28))
 

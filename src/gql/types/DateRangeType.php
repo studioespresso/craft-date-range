@@ -35,6 +35,10 @@ class DateRangeType extends ObjectType
                 return $source->isPast;
                 break;
 
+            case 'isNotPast':
+                return $source->isNotPast;
+                break;
+
             case 'isFuture':
                 return $source->isFuture;
                 break;

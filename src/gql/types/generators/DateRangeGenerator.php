@@ -44,6 +44,12 @@ class DateRangeGenerator implements GeneratorInterface
                 'description' => 'Wether or not the date range is in the past',
                 'type' => Type::boolean(),
             ],
+
+            'isNotPast' => [
+                'name' => 'isNotPast',
+                'description' => 'Wether or not the end date is in the future',
+                'type' => Type::boolean(),
+            ],
             'isFuture' => [
                 'name' => 'isFuture',
                 'description' => 'Wether or not the date range is in the future',

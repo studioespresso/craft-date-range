@@ -41,7 +41,7 @@ Example:
 {% set events = craft.entries.section('events').isFuture('dateRangeFieldHandle')  %}
 ```
 
-The plugin includes `isOnGoing()`, `isPast()` and `isFuture()` query behaviors. You can optionally pass `true` as a second argument to the query to make it include events that happen today in future/past/onGoing queries. 
+The plugin includes `isOnGoing()`, `isPast()`,`isNotPast()`  and `isFuture()` query behaviors. You can optionally pass `true` as a second argument to the query to make it include events that happen today in future/past/onGoing queries. 
 
 ### Field values
 When using the field in your template, you have access to both `start` and `end` properties, as well as:
