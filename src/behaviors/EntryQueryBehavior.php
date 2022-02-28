@@ -27,6 +27,8 @@ class EntryQueryBehavior extends Behavior
 
     public $isPast = false;
 
+    public $isNotPast = false;
+
     public $isOnGoing = false;
 
     public $includeToday;
@@ -57,6 +59,14 @@ class EntryQueryBehavior extends Behavior
         return $this->owner;
     }
 
+    public function isNotPast($value, $includeToday = false)
+    {
+        $this->handle = is_array($value) ? $value[0] : $value;
+        $this->includeToday = is_array($value) ? $value[1] : $includeToday;
+        $this->isNotPast = true;
+        return $this->owner;
+    }
+
     public function isOnGoing($value, $includeToday = false)
     {
         $this->handle = is_array($value) ? $value[0] : $value;
@@ -84,7 +94,7 @@ class EntryQueryBehavior extends Behavior
             if ($this->field && $this->isFuture) {
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
-                        '"field_'. $this->handle .$this->columnSuffix . '"::json->>\'start\'',
+                        '"field_' . $this->handle . $this->columnSuffix . '"::json->>\'start\'',
                         date('Y-m-d'),
                         $this->includeToday ? '>=' : '>'
                     ));
@@ -92,21 +102,31 @@ class EntryQueryBehavior extends Behavior
             if ($this->field && $this->isPast) {
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
-                        '"field_'. $this->handle .$this->columnSuffix . '"::json->>\'end\'',
+                        '"field_' . $this->handle . $this->columnSuffix . '"::json->>\'end\'',
                         date('Y-m-d'),
                         $this->includeToday ? '<=' : '<'
                     ));
             }
+
+            if ($this->field && $this->isNotPast) {
+                $this->owner->subQuery
+                    ->andWhere(Db::parseDateParam(
+                        '"field_' . $this->handle . $this->columnSuffix . '"::json->>\'end\'',
+                        date('Y-m-d'),
+                        $this->includeToday ? '>=' : '>'
+                    ));
+            }
+
             if ($this->field && $this->isOnGoing) {
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
-                        '"field_'. $this->handle .$this->columnSuffix . '"::json->>\'start\'',
+                        '"field_' . $this->handle . $this->columnSuffix . '"::json->>\'start\'',
                         date('Y-m-d'),
                         $this->includeToday ? '<=' : '<'
                     ));
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
-                        '"field_'. $this->handle .$this->columnSuffix . '"::json->>\'end\'',
+                        '"field_' . $this->handle . $this->columnSuffix . '"::json->>\'end\'',
                         date('Y-m-d'),
                         $this->includeToday ? '>=' : '>'
                     ));
@@ -127,6 +147,15 @@ class EntryQueryBehavior extends Behavior
                         "JSON_EXTRACT(field_$this->handle$this->columnSuffix, '$.end')",
                         date('Y-m-d'),
                         $this->includeToday ? '<=' : '<'
+                    ));
+            }
+
+            if ($this->field && $this->isNotPast) {
+                $this->owner->subQuery
+                    ->andWhere(Db::parseDateParam(
+                        "JSON_EXTRACT(field_$this->handle$this->columnSuffix, '$.end')",
+                        date('Y-m-d'),
+                        $this->includeToday ? '>=' : '>'
                     ));
             }
 
