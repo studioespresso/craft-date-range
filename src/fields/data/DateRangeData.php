@@ -25,6 +25,8 @@ class DateRangeData extends BaseObject implements Serializable
 
     public $isPast;
 
+    public $isNotPast;
+
 
     public function __construct($value = null, $config = [])
     {
@@ -33,6 +35,7 @@ class DateRangeData extends BaseObject implements Serializable
         $this->isFuture = $this->getIsFuture();
         $this->isOngoing = $this->getIsOngoing();
         $this->isPast = $this->getIsPast();
+        $this->isNotPast = $this->getIsNotPast();
         parent::__construct($config);
     }
 
@@ -120,6 +123,21 @@ class DateRangeData extends BaseObject implements Serializable
     {
         $now = new \DateTime();
         if ($this->end->format('U') < $now->format('U')) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param \DateTime $start
+     * @param \DateTime $end
+     * @return bool
+     * @throws \Exception
+     */
+    public function getIsNotPast()
+    {
+        $now = new \DateTime();
+        if ($this->end->format('U') > $now->format('U')) {
             return true;
         }
         return false;
