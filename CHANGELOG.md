@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.0.0-beta.1 - 2022-03-02
+### Added
+- Craft CMS 4 compatibility
+
 ## 2.4.0
 ### Added
 - Added GraphQL query arguments for isFuture, isCurrent and isPast. Thanks [MrHesus](https://github.com/MrHesus)! ([#25](https://github.com/studioespresso/craft-date-range/issues/25) & [#28](https://github.com/studioespresso/craft-date-range/pull/28))
