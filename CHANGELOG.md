@@ -4,12 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.0.0 - 2022-05-01
+### Added
+- Craft 4 🚀
+
+## 3.0.0-beta.1 - 2022-03-02
+### Added
+- Craft CMS 4 compatibility
+
 ## 2.5.0 - 2022-02-28
 ### Added
 - Added ``isNotPast`` option ([#31](https://github.com/studioespresso/craft-date-range/issues/31))
 
-
-## 2.4.0 - 2021-11-21
+## 2.4.0
 ### Added
 - Added GraphQL query arguments for isFuture, isCurrent and isPast. Thanks [MrHesus](https://github.com/MrHesus)! ([#25](https://github.com/studioespresso/craft-date-range/issues/25) & [#28](https://github.com/studioespresso/craft-date-range/pull/28))
 
@@ -91,9 +98,4 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.0.1 - 2019-11-21
 ### Fixed 
-- Fixed an issue where using `isOngoing()` wouldn't use the correct data and would crash. [#2](https://github.com/studioespresso/craft-date-range/issues/2)
-- Better date format parsing using ``DateTimeHelper::toDateTime()``
-
-## 1.0.0 - 2019-10-24
-### Added
-- Initial release 🎉
+- Fixed an issue where using `isOngoing()` wouldn't use the correct data and woul
