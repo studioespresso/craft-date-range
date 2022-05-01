@@ -111,7 +111,7 @@ class DateRangeField extends Field implements PreviewableFieldInterface, Sortabl
         }
     }
     
-    public function getContentGqlType()
+    public function getContentGqlType(): array
     {
         $typeArray = DateRangeGenerator::generateTypes($this);
 
@@ -135,7 +135,7 @@ class DateRangeField extends Field implements PreviewableFieldInterface, Sortabl
     /**
      * @inheritdoc
      */
-    public function normalizeValue($value, ElementInterface $element = null)
+    public function normalizeValue($value, ElementInterface $element = null): mixed
     {
         if (!$value) {
             return null;
@@ -157,7 +157,7 @@ class DateRangeField extends Field implements PreviewableFieldInterface, Sortabl
      * @param $value DateRangeData
      * @inheritdoc
      */
-    public function serializeValue($value, ElementInterface $element = null)
+    public function serializeValue($value, ElementInterface $element = null): mixed
     {
         if (!$value) {
             return null;

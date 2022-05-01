@@ -36,7 +36,7 @@ class DateRangeData extends BaseObject implements Serializable
         parent::__construct($config);
     }
 
-    public function serialize()
+    public function serialize(): mixed
     {
         return [$this->start, $this->end];
     }
