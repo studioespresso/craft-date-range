@@ -20,6 +20,7 @@ use craft\helpers\Db;
 use craft\helpers\Html;
 use craft\helpers\Localization;
 use craft\i18n\Locale;
+use GraphQL\Type\Definition\Type;
 use studioespresso\daterange\assetbundles\daterangefield\DateRangeFieldAsset;
 use studioespresso\daterange\fields\data\DateRangeData;
 use studioespresso\daterange\gql\types\generators\DateRangeGenerator;
@@ -111,7 +112,7 @@ class DateRangeField extends Field implements PreviewableFieldInterface, Sortabl
         }
     }
     
-    public function getContentGqlType(): array
+    public function getContentGqlType(): Type|array
     {
         $typeArray = DateRangeGenerator::generateTypes($this);
 

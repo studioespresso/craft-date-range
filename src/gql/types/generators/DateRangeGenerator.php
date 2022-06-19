@@ -24,7 +24,6 @@ class DateRangeGenerator implements GeneratorInterface
      */
     public static function generateTypes($context = null): array
     {
-        /** @var OptimizedImages $context */
         $typeName = self::getName($context);
 
         $props = [
@@ -82,7 +81,6 @@ class DateRangeGenerator implements GeneratorInterface
      */
     public static function getName($context = null): string
     {
-        /** @var OptimizedImages $context */
         return $context->handle.'_dateRangeField';
     }
 }
