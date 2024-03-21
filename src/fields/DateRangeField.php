@@ -74,11 +74,15 @@ class DateRangeField extends Field implements PreviewableFieldInterface, Sortabl
     /**
      * @inheritdoc
      */
-    public function getContentColumnType(): string
+    public static function dbType(): array|string|null
     {
-        return Schema::TYPE_STRING;
+        return Schema::TYPE_JSON;
     }
 
+    public static function isMultiInstance(): bool
+    {
+        return false;
+    }
 
     /**
      * @inheritdoc

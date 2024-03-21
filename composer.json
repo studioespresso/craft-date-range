@@ -2,7 +2,7 @@
     "name": "studioespresso/craft-date-range",
     "description": "Date range field",
     "type": "craft-plugin",
-    "version": "3.0.1",
+    "version": "5.0.0-alpha.1",
     "keywords": [
         "craft",
         "cms",
@@ -18,11 +18,11 @@
     "authors": [
         {
             "name": "Studio Espresso",
-            "homepage": "https://studioespresso.co/en"
+            "homepage": "https://www.studioespresso.co"
         }
     ],
     "require": {
-        "craftcms/cms": "^4.0.0-RC1"
+        "craftcms/cms": "^5.0.0-alpha"
     },
     "autoload": {
         "psr-4": {
