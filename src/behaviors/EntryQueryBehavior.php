@@ -5,7 +5,6 @@ namespace studioespresso\daterange\behaviors;
 use Craft;
 use craft\elements\db\ElementQuery;
 use craft\elements\db\EntryQuery;
-use craft\errors\InvalidFieldException;
 use craft\helpers\Db;
 use yii\base\Behavior;
 use yii\base\InvalidConfigException;
@@ -17,7 +16,6 @@ use yii\base\InvalidConfigException;
  */
 class EntryQueryBehavior extends Behavior
 {
-
     public $handle;
 
     public $field = false;

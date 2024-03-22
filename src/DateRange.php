@@ -64,16 +64,16 @@ class DateRange extends Plugin
         Event::on(
             Fields::class,
             Fields::EVENT_REGISTER_FIELD_TYPES,
-            function (RegisterComponentTypesEvent $event) {
+            function(RegisterComponentTypesEvent $event) {
                 $event->types[] = DateRangeField::class;
             }
         );
 
         if (
             Craft::$app->db->getIsMysql() ||
-            (Craft::$app->db->getIsPgsql() &&  version_compare(Craft::$app->db->getServerVersion(), "9.3", ">="))
+            (Craft::$app->db->getIsPgsql() && version_compare(Craft::$app->db->getServerVersion(), "9.3", ">="))
         ) {
-            Event::on(EntryQuery::class, EntryQuery::EVENT_DEFINE_BEHAVIORS, function (DefineBehaviorsEvent $event) {
+            Event::on(EntryQuery::class, EntryQuery::EVENT_DEFINE_BEHAVIORS, function(DefineBehaviorsEvent $event) {
                 $event->behaviors[$this->id] = EntryQueryBehavior::class;
             });
         }
@@ -81,7 +81,7 @@ class DateRange extends Plugin
         Event::on(
             Gql::class,
             Gql::EVENT_REGISTER_GQL_QUERIES,
-            function (RegisterGqlQueriesEvent $event) {
+            function(RegisterGqlQueriesEvent $event) {
                 // Add isFuture, isOngoing, isPast to entry query arguments
                 $arguments = EntriesArguments::getArguments();
 

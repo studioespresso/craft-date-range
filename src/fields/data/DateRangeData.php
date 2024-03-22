@@ -8,13 +8,10 @@ use craft\base\Serializable;
 use craft\helpers\DateTimeHelper;
 use craft\helpers\Json;
 use craft\i18n\Locale;
-use studioespresso\daterange\fields\DateRangeField;
 use yii\base\BaseObject;
-use yii\i18n\Formatter;
 
 class DateRangeData extends BaseObject implements Serializable
 {
-
     public $start;
 
     public $end;
@@ -60,9 +57,9 @@ class DateRangeData extends BaseObject implements Serializable
         $string = '';
         $formatter = $locale ? (new Locale($locale))->getFormatter() : Craft::$app->getFormatter();
 
-        if($this->start->format('U') === $this->end->format('U')) {
-           $string = $formatter->asDate($this->start, "php:$format");
-        }  elseif ($this->start->format('dmy') === $this->end->format('dmy') && isset($timeFormat)) {
+        if ($this->start->format('U') === $this->end->format('U')) {
+            $string = $formatter->asDate($this->start, "php:$format");
+        } elseif ($this->start->format('dmy') === $this->end->format('dmy') && isset($timeFormat)) {
             $string .= $formatter->asDate($this->start, "php:$dateFormat");
             $string .= " ";
             $string .= $formatter->asTime($this->start, "php:$timeFormat");
@@ -100,15 +97,12 @@ class DateRangeData extends BaseObject implements Serializable
      */
     public function getIsOngoing()
     {
-
         $now = new \DateTime();
         if (
             $this->start->format('U') < $now->format('U')
             && $this->end->format('U') > $now->format('U')
         ) {
-
             return true;
-
         }
         return false;
     }
@@ -166,7 +160,7 @@ class DateRangeData extends BaseObject implements Serializable
 
         return [
             'start' => $start,
-            'end' => $end
+            'end' => $end,
         ];
     }
 }

@@ -64,12 +64,12 @@ class DateRangeGenerator implements GeneratorInterface
             ?: GqlEntityRegistry::createEntity($typeName, new DateRangeType([
             'name' => $typeName,
             'description' => 'This entity has the DateRange properties',
-            'fields' => function () use ($props) {
+            'fields' => function() use ($props) {
                 return $props;
             },
             ]));
 
-        TypeLoader::registerType($typeName, function () use ($dateRangeType) {
+        TypeLoader::registerType($typeName, function() use ($dateRangeType) {
             return $dateRangeType;
         });
 
@@ -81,6 +81,6 @@ class DateRangeGenerator implements GeneratorInterface
      */
     public static function getName($context = null): string
     {
-        return $context->handle.'_dateRangeField';
+        return $context->handle . '_dateRangeField';
     }
 }

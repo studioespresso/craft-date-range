@@ -25,23 +25,23 @@ class EntriesArguments extends Entry
             'isFuture' => [
                 'name' => 'isFuture',
                 'type' => Type::listOf(QueryArgument::getType()),
-                'description' => 'Query entries in the future'
+                'description' => 'Query entries in the future',
             ],
             'isOngoing' => [
                 'name' => 'isOngoing',
                 'type' => Type::listOf(QueryArgument::getType()),
-                'description' => 'Query ongoing entries'
+                'description' => 'Query ongoing entries',
             ],
             'isPast' => [
                 'name' => 'isPast',
                 'type' => Type::listOf(QueryArgument::getType()),
-                'description' => 'Query entries in the past'
+                'description' => 'Query entries in the past',
             ],
             'isNotPast' => [
                 'name' => 'isNotPast',
                 'type' => Type::listOf(QueryArgument::getType()),
-                'description' => 'Query entries where the end date is in the future'
-            ]
+                'description' => 'Query entries where the end date is in the future',
+            ],
 
         ]);
     }

@@ -15,13 +15,9 @@ use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
 use craft\base\SortableFieldInterface;
-use craft\helpers\DateTimeHelper;
 use craft\helpers\Db;
-use craft\helpers\Html;
-use craft\helpers\Localization;
 use craft\i18n\Locale;
 use GraphQL\Type\Definition\Type;
-use studioespresso\daterange\assetbundles\daterangefield\DateRangeFieldAsset;
 use studioespresso\daterange\fields\data\DateRangeData;
 use studioespresso\daterange\gql\types\generators\DateRangeGenerator;
 use studioespresso\daterange\validators\EndDateValidator;
@@ -132,7 +128,6 @@ class DateRangeField extends Field implements PreviewableFieldInterface, Sortabl
 
     public function getElementValidationRules(): array
     {
-
         if ($this->endAfterStart) {
             return [EndDateValidator::class];
         }
@@ -179,7 +174,6 @@ class DateRangeField extends Field implements PreviewableFieldInterface, Sortabl
             $data['end'] = Db::prepareDateForDb($value->end);
         }
         return $data;
-
     }
 
     /**
