@@ -111,14 +111,6 @@ class DateRangeField extends Field implements PreviewableFieldInterface, Sortabl
             }
         }
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function getTableAttributeHtml($value, ElementInterface $element): string
-    {
-
-    }
     
     public function getContentGqlType(): Type|array
     {
