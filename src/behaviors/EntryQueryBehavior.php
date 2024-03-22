@@ -8,6 +8,7 @@ use craft\elements\db\EntryQuery;
 use craft\errors\InvalidFieldException;
 use craft\helpers\Db;
 use yii\base\Behavior;
+use yii\base\InvalidConfigException;
 
 /**
  * Class EntryQueryBehavior
@@ -84,8 +85,15 @@ class EntryQueryBehavior extends Behavior
 
     public function onAfterPrepare()
     {
+        if ($this->handle && !$this->entryTypeHandle) {
+            throw new InvalidConfigException("entryType not specified, see the Craft 5 upgrade guide on the changes required.");
+        }
+
         if ($this->handle && $this->entryTypeHandle) {
             $type = Craft::$app->getEntries()->getEntryTypeByHandle($this->entryTypeHandle);
+            if (!$type) {
+                throw new InvalidConfigException("Invalid entryType specified");
+            }
             $layout = Craft::$app->getFields()->getLayoutById($type->fieldLayoutId);
             $this->field = $layout->getFieldByHandle($this->handle);
         }
@@ -135,7 +143,7 @@ class EntryQueryBehavior extends Behavior
             if ($this->field && $this->isFuture) {
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
-                        "JSON_EXTRACT({$this->field->getValueSql()}, '$.start')",
+                        $this->field->getValueSql('start'),
                         date('Y-m-d'),
                         $this->includeToday ? '>=' : '>'
                     ));
@@ -144,7 +152,7 @@ class EntryQueryBehavior extends Behavior
             if ($this->field && $this->isPast) {
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
-                        "JSON_EXTRACT({$this->field->getValueSql()}, '$.end')",
+                        $this->field->getValueSql('end'),
                         date('Y-m-d'),
                         $this->includeToday ? '<=' : '<'
                     ));
@@ -153,7 +161,7 @@ class EntryQueryBehavior extends Behavior
             if ($this->field && $this->isNotPast) {
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
-                        "JSON_EXTRACT({$this->field->getValueSql()}, '$.end')",
+                        $this->field->getValueSql('end'),
                         date('Y-m-d'),
                         $this->includeToday ? '>=' : '>'
                     ));
@@ -162,13 +170,13 @@ class EntryQueryBehavior extends Behavior
             if ($this->field && $this->isOnGoing) {
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
-                        "JSON_EXTRACT({$this->field->getValueSql()}, '$.start')",
+                        $this->field->getValueSql('start'),
                         date('Y-m-d'),
                         $this->includeToday ? '<=' : '<'
                     ));
                 $this->owner->subQuery
                     ->andWhere(Db::parseDateParam(
-                        "JSON_EXTRACT({$this->field->getValueSql()}, '$.end')",
+                        $this->field->getValueSql('end'),
                         date('Y-m-d'),
                         $this->includeToday ? '>=' : '>'
                     ));

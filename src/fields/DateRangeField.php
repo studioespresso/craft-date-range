@@ -76,7 +76,10 @@ class DateRangeField extends Field implements PreviewableFieldInterface, Sortabl
      */
     public static function dbType(): array|string|null
     {
-        return Schema::TYPE_JSON;
+        return [
+            'start' => Schema::TYPE_DATETIME,
+            'end' => Schema::TYPE_DATETIME,
+        ];
     }
 
     public static function isMultiInstance(): bool
@@ -130,7 +133,7 @@ class DateRangeField extends Field implements PreviewableFieldInterface, Sortabl
     public function getElementValidationRules(): array
     {
 
-        if($this->endAfterStart) {
+        if ($this->endAfterStart) {
             return [EndDateValidator::class];
         }
         return [];
