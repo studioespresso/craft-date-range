@@ -1,32 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="163px" height="163px" viewBox="0 0 163 163" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
-    <title>icon</title>
-    <desc>Created with Sketch.</desc>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="icon" fill-rule="nonzero">
-            <path d="M0,81.5006436 C0,36.487025 36.4885998,0 81.498713,0 C126.5114,0 163,36.487025 163,81.5006436 C163,126.509114 126.5114,163 81.498713,163 C36.4885998,163 0,126.509114 0,81.5006436 Z" id="Shape" fill="#284A9F"></path>
-            <g id="Group" transform="translate(35.000000, 31.000000)">
-                <rect id="Rectangle" fill="#FFFFFF" x="0" y="9" width="93" height="87"></rect>
-                <rect id="Rectangle" fill="#284A9F" x="6" y="30" width="81" height="59"></rect>
-                <rect id="Rectangle" fill="#FFFFFF" x="31" y="36" width="14" height="9"></rect>
-                <rect id="Rectangle" fill="#FFFFFF" x="48" y="36" width="14" height="9"></rect>
-                <rect id="Rectangle" fill="#FFFFFF" x="66" y="36" width="14" height="9"></rect>
-                <rect id="Rectangle" fill="#FFFFFF" x="14" y="49" width="14" height="9"></rect>
-                <rect id="Rectangle" fill="#FFFFFF" x="31" y="49" width="14" height="9"></rect>
-                <rect id="Rectangle" fill="#FFFFFF" x="48" y="49" width="14" height="9"></rect>
-                <rect id="Rectangle" fill="#FFFFFF" x="66" y="49" width="14" height="9"></rect>
-                <rect id="Rectangle" fill="#FFFFFF" x="14" y="62" width="14" height="9"></rect>
-                <rect id="Rectangle" fill="#FFFFFF" x="31" y="62" width="14" height="9"></rect>
-                <rect id="Rectangle" fill="#FFFFFF" x="48" y="62" width="14" height="9"></rect>
-                <rect id="Rectangle" fill="#FFFFFF" x="66" y="62" width="14" height="9"></rect>
-                <rect id="Rectangle" fill="#FFFFFF" x="14" y="75" width="14" height="9"></rect>
-                <rect id="Rectangle" fill="#FFFFFF" x="31" y="75" width="14" height="9"></rect>
-                <rect id="Rectangle" fill="#FFFFFF" x="48" y="75" width="14" height="9"></rect>
-                <rect id="Rectangle" fill="#284A9F" x="7" y="14" width="40" height="11"></rect>
-                <rect id="Rectangle" fill="#FFFFFF" x="10" y="0" width="7" height="9"></rect>
-                <rect id="Rectangle" fill="#FFFFFF" x="80" y="0" width="7" height="9"></rect>
-            </g>
-        </g>
-    </g>
+<svg width="305" height="305" viewBox="0 0 305 305" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_13_963" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="305" height="305">
+<path d="M0 152.5C0 26.9162 26.9162 0 152.5 0C278.084 0 305 26.9162 305 152.5C305 278.084 278.084 305 152.5 305C26.9162 305 0 278.084 0 152.5Z" fill="#C4C4C4"/>
+</mask>
+<g mask="url(#mask0_13_963)">
+<rect width="305" height="305" transform="translate(-1)" fill="#FACA30"/>
+</g>
+<g clip-path="url(#clip0_13_963)">
+<path d="M233.837 73.1875H207.562V61.0625C207.562 57.7099 204.853 55 201.5 55C198.147 55 195.438 57.7099 195.438 61.0625V73.1875H159.062V61.0625C159.062 57.7099 156.346 55 153 55C149.654 55 146.938 57.7099 146.938 61.0625V73.1875H110.562V61.0625C110.562 57.7099 107.846 55 104.5 55C101.154 55 98.4375 57.7099 98.4375 61.0625V73.1875H72.1687C63.2386 73.1875 56 80.4201 56 89.3501V232.831C56 241.761 63.2386 249 72.1687 249H233.837C242.767 249 250 241.761 250 232.831V89.3501C250 80.4201 242.767 73.1875 233.837 73.1875ZM237.875 232.831C237.875 235.062 236.062 236.875 233.837 236.875H72.1687C69.9377 236.875 68.125 235.062 68.125 232.831V89.3501C68.125 87.1252 69.9377 85.3125 72.1687 85.3125H98.4375V97.4375C98.4375 100.79 101.154 103.5 104.5 103.5C107.846 103.5 110.562 100.79 110.562 97.4375V85.3125H146.938V97.4375C146.938 100.79 149.654 103.5 153 103.5C156.346 103.5 159.062 100.79 159.062 97.4375V85.3125H195.438V97.4375C195.438 100.79 198.147 103.5 201.5 103.5C204.853 103.5 207.562 100.79 207.562 97.4375V85.3125H233.837C236.062 85.3125 237.875 87.1252 237.875 89.3501V232.831Z" fill="black"/>
+<path d="M122.688 127.75H98.4375V145.938H122.688V127.75Z" fill="black"/>
+<path d="M122.688 158.062H98.4375V176.25H122.688V158.062Z" fill="black"/>
+<path d="M122.688 188.375H98.4375V206.562H122.688V188.375Z" fill="black"/>
+<path d="M165.125 188.375H140.875V206.562H165.125V188.375Z" fill="black"/>
+<path d="M165.125 158.062H140.875V176.25H165.125V158.062Z" fill="black"/>
+<path d="M165.125 127.75H140.875V145.938H165.125V127.75Z" fill="black"/>
+<path d="M207.562 188.375H183.312V206.562H207.562V188.375Z" fill="black"/>
+<path d="M207.562 158.062H183.312V176.25H207.562V158.062Z" fill="black"/>
+<path d="M207.562 127.75H183.312V145.938H207.562V127.75Z" fill="black"/>
+</g>
+<defs>
+<clipPath id="clip0_13_963">
+<rect width="194" height="194" fill="white" transform="translate(56 55)"/>
+</clipPath>
+</defs>
 </svg>
