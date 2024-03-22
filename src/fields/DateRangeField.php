@@ -83,10 +83,7 @@ class DateRangeField extends Field implements PreviewableFieldInterface, Sortabl
         return false;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getTableAttributeHtml($value, ElementInterface $element): string
+    public function getPreviewHtml(mixed $value, ElementInterface $element): string
     {
         $formatter = Craft::$app->getFormatter();
         if (!$value) {
@@ -113,6 +110,14 @@ class DateRangeField extends Field implements PreviewableFieldInterface, Sortabl
                     $formatter->asDate($value->end, Locale::LENGTH_SHORT);
             }
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTableAttributeHtml($value, ElementInterface $element): string
+    {
+
     }
     
     public function getContentGqlType(): Type|array
