@@ -43,6 +43,9 @@ class DateRangeData extends BaseObject implements Serializable
 
     public function getFormatted($format = 'd/m/Y', $seperator = ' - ', $locale = null)
     {
+        $dateFormat = "d/m/Y";
+        $timeFormat = "H:i:s";
+
         if (is_array($format)) {
             if (isset($format['date'])) {
                 $dateFormat = $format['date'];
@@ -50,7 +53,11 @@ class DateRangeData extends BaseObject implements Serializable
             if (isset($format['time'])) {
                 $timeFormat = $format['time'];
             }
-            $format = ($dateFormat ? $dateFormat : '') . ' ' . ($timeFormat ? $timeFormat : '');
+            $format = (
+                    $dateFormat
+                ) . ' ' . (
+                    $timeFormat
+                );
         } else {
             $format = $format;
         }
@@ -59,7 +66,7 @@ class DateRangeData extends BaseObject implements Serializable
 
         if ($this->start->format('U') === $this->end->format('U')) {
             $string = $formatter->asDate($this->start, "php:$format");
-        } elseif ($this->start->format('dmy') === $this->end->format('dmy') && isset($timeFormat)) {
+        } elseif ($this->start->format('dmy') === $this->end->format('dmy') && $timeFormat) {
             $string .= $formatter->asDate($this->start, "php:$dateFormat");
             $string .= " ";
             $string .= $formatter->asTime($this->start, "php:$timeFormat");
@@ -137,7 +144,7 @@ class DateRangeData extends BaseObject implements Serializable
         return false;
     }
 
-    public static function normalize($value = null, FieldInterface $config)
+    public static function normalize($value, FieldInterface $config)
     {
         if (!is_array($value)) {
             $value = Json::decode($value);
