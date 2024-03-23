@@ -80,7 +80,7 @@ class DateRangeField extends Field implements PreviewableFieldInterface, Sortabl
 
     public static function isMultiInstance(): bool
     {
-        return false;
+        return true;
     }
 
     public function getPreviewHtml(mixed $value, ElementInterface $element): string
