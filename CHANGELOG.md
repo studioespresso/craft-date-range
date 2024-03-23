@@ -4,12 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 5.0.0 - 2024-03-22
+## 5.0.0-beta.1 - 2024-03-22
 
 > [!WARNING]  
-> 
+> When upgrading to Craft 5, you'll need to update templates that use ``isPast``, ``isFuture``, ``isOnGoing`` or ``isNotPast``. Please see the [upgrade guide](https://github.com/studioespresso/craft-date-range/tree/v5?tab=readme-ov-file#upgrading-to-craft-5) for more information.
 
-
+### Added
+- Craft 5 support 
 
 ## 3.0.1 - 2022-06-19
 ### Fixed
