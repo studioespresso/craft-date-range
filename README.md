@@ -1,10 +1,12 @@
-# Date Range field for Craft CMS 3
+# Date Range field for Craft CMS
 
 What is says on the tin 🙂. This field gives you a start and end date in 1 field.
 
+<img src="https://www.studioespresso.co/assets/date-range-github-banner.png">
+
 ## Requirements
 
-This plugin requires Craft CMS 3.0.0 or later.
+This plugin requires Craft CMS 3, 4 or 5.
 
 ## Installation
 
@@ -29,6 +31,17 @@ Since a PHP ``DateTime`` object also has a time value, wether you entered on or 
 
 When you enable either or both time fields, that value will off course be safed. For fields that don't have time options set, ``00:00:00`` will get saved.
 
+## Upgrading to Craft 5
+With Craft 5 comes multi-instance support (fields can be used multiple times in the same layout) and this adds a bit of complexity for the Date Range plugin.
+In the query behaviour, you'll need to add the handle of the entry type you're trying to query as a second argument.
+
+````twig
+// Craft 4
+{% set events = craft.entries.section('events').isFuture('dateRangeFieldHandle')  %}
+
+// Craft 5
+{% set events = craft.entries.section('events').isFuture('dateRangeFieldHandle', 'entryTypeHandle')  %}
+````
 
 ## Templating
 
@@ -38,10 +51,13 @@ When you enable either or both time fields, that value will off course be safed.
 Example:
 
 ```twig
-{% set events = craft.entries.section('events').isFuture('dateRangeFieldHandle')  %}
+{% set events = craft.entries.section('events').isFuture('dateRangeFieldHandle', 'entryTypeHandle')  %}
 ```
 
-The plugin includes `isOnGoing()`, `isPast()`,`isNotPast()`  and `isFuture()` query behaviors. You can optionally pass `true` as a second argument to the query to make it include events that happen today in future/past/onGoing queries. 
+The plugin includes `isOnGoing()`, `isPast()`,`isNotPast()`  and `isFuture()` query behaviors.
+The second argument passed should be the handle of the entry type you want to query.
+
+You can optionally pass `true` as a third argument to the query to make it include events that happen today in future/past/onGoing queries. 
 
 ### Field values
 When using the field in your template, you have access to both `start` and `end` properties, as well as:
