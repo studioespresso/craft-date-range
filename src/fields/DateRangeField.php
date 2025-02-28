@@ -55,6 +55,13 @@ class DateRangeField extends Field implements PreviewableFieldInterface, Sortabl
         return Craft::t('date-range', 'Date range');
     }
 
+    /**
+     * @inheritdoc
+     */
+    public static function icon(): string
+    {
+        return 'calendar';
+    }
     // Public Methods
     // =========================================================================
 
