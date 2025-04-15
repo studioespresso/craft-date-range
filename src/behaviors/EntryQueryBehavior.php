@@ -8,7 +8,7 @@ use craft\elements\db\EntryQuery;
 use craft\helpers\Db;
 use yii\base\Behavior;
 use yii\base\InvalidConfigException;
-
+use craft\commerce\Plugin as Commerce;
 /**
  * Class EntryQueryBehavior
  *
@@ -32,7 +32,7 @@ class EntryQueryBehavior extends Behavior
 
     public $includeToday;
 
-    public string|null $entryTypeHandle = null;
+    public string|array|object|null $entryTypeHandle = null;
 
     /**
      * @inheritdoc
@@ -44,7 +44,7 @@ class EntryQueryBehavior extends Behavior
         ];
     }
 
-    public function isFuture($value, string|bool $entryTypeHandle = null, bool $includeToday = false)
+    public function isFuture($value, string|array|object|bool $entryTypeHandle = null, bool $includeToday = false)
     {
         $value = $this->parseArgumentValue($value, $entryTypeHandle, $includeToday);
 
@@ -56,7 +56,7 @@ class EntryQueryBehavior extends Behavior
         return $this->owner;
     }
 
-    public function isPast($value, string|bool $entryTypeHandle = null, $includeToday = false)
+    public function isPast($value, string|array|object|bool $entryTypeHandle = null, $includeToday = false)
     {
         $value = $this->parseArgumentValue($value, $entryTypeHandle, $includeToday);
 
@@ -67,7 +67,7 @@ class EntryQueryBehavior extends Behavior
         return $this->owner;
     }
 
-    public function isNotPast($value, string|bool $entryTypeHandle = null, $includeToday = false)
+    public function isNotPast($value, string|array|object|bool $entryTypeHandle = null, $includeToday = false)
     {
         $value = $this->parseArgumentValue($value, $entryTypeHandle, $includeToday);
 
@@ -78,7 +78,7 @@ class EntryQueryBehavior extends Behavior
         return $this->owner;
     }
 
-    public function isOnGoing($value, string|bool $entryTypeHandle = null, $includeToday = false)
+    public function isOnGoing($value, string|array|object|bool $entryTypeHandle = null, $includeToday = false)
     {
         $value = $this->parseArgumentValue($value, $entryTypeHandle, $includeToday);
 
@@ -96,108 +96,125 @@ class EntryQueryBehavior extends Behavior
         }
 
         if ($this->handle && $this->entryTypeHandle) {
-            $type = Craft::$app->getEntries()->getEntryTypeByHandle($this->entryTypeHandle);
-            if (!$type) {
-                throw new InvalidConfigException("Invalid entryType specified");
+            $fieldsForTypes = [];
+            $entryTypes = $this->getEntryTypes();
+
+            foreach ($entryTypes as $typeHandle => $entryType) {
+                $layout = Craft::$app->getFields()->getLayoutById($entryType->fieldLayoutId);
+                $field = $layout->getFieldByHandle($this->handle);
+                if ($field) {
+                    $fieldsForTypes[$typeHandle] = $field;
+                }
             }
-            $layout = Craft::$app->getFields()->getLayoutById($type->fieldLayoutId);
-            $this->field = $layout->getFieldByHandle($this->handle);
+
+            // If we have fields to work with
+            if (!empty($fieldsForTypes)) {
+                $this->processDateQueries($fieldsForTypes);
+            }
+        }
+    }
+
+    /**
+     * Get entry types from either handles or objects
+     *
+     * @return array Array of entry type objects indexed by handle
+     */
+    protected function getEntryTypes()
+    {
+        $entryTypes = [];
+
+        // Convert to array if single value
+        $types = is_array($this->entryTypeHandle) ? $this->entryTypeHandle : [$this->entryTypeHandle];
+
+        foreach ($types as $key => $type) {
+            // If it's an object with fieldLayoutId property, use it directly
+            if (is_object($type) && property_exists($type, 'fieldLayoutId')) {
+                $handle = property_exists($type, 'handle') ? $type->handle : 'type_' . $key;
+                $entryTypes[$handle] = $type;
+            }
+            // If it's a string, try to get the entry type
+            else if (is_string($type)) {
+                $trimmedType = trim($type);
+                // Try to get from Entry Types first
+                $entryType = Craft::$app->getEntries()->getEntryTypeByHandle($trimmedType);
+                if ($entryType) {
+                    $entryTypes[$trimmedType] = $entryType;
+                } else {
+                    // If not found, try Commerce Product Types
+                    $productType = Commerce::getInstance()->getProductTypes()->getProductTypeByHandle($trimmedType);
+                    if ($productType) {
+                        $entryTypes[$trimmedType] = $productType;
+                    } else {
+                        throw new InvalidConfigException("Invalid type specified: " . $trimmedType);
+                    }
+                }
+            }
         }
 
-        if (Craft::$app->db->getIsPgsql()) {
-            /** @var \craft\base\FieldInterface|null $field */
-            $field = $this->field;
-            if ($field && $this->isFuture) {
-                $this->owner->subQuery
-                    ->andWhere(Db::parseDateParam(
+        if (empty($entryTypes)) {
+            throw new InvalidConfigException("No valid entry types were found");
+        }
+
+        return $entryTypes;
+    }
+
+    protected function processDateQueries($fieldsForTypes)
+    {
+        if (Craft::$app->db->getIsPgsql() || Craft::$app->db->getIsMysql()) {
+            $or = ['or'];
+
+            foreach ($fieldsForTypes as $typeHandle => $field) {
+                if ($this->isFuture) {
+                    $or[] = Db::parseDateParam(
                         $field->getValueSql('start'),
                         date('Y-m-d'),
                         $this->includeToday ? '>=' : '>'
-                    ));
-            }
+                    );
+                }
 
-            if ($field && $this->isPast) {
-                $this->owner->subQuery
-                    ->andWhere(Db::parseDateParam(
+                if ($this->isPast) {
+                    $or[] = Db::parseDateParam(
                         $field->getValueSql('end'),
                         date('Y-m-d'),
                         $this->includeToday ? '<=' : '<'
-                    ));
-            }
+                    );
+                }
 
-            if ($field && $this->isNotPast) {
-                $this->owner->subQuery
-                    ->andWhere(Db::parseDateParam(
+                if ($this->isNotPast) {
+                    $or[] = Db::parseDateParam(
                         $field->getValueSql('end'),
                         date('Y-m-d'),
                         $this->includeToday ? '>=' : '>'
-                    ));
+                    );
+                }
+
+                if ($this->isOnGoing) {
+                    $and = ['and',
+                        Db::parseDateParam(
+                            $field->getValueSql('start'),
+                            date('Y-m-d'),
+                            $this->includeToday ? '<=' : '<'
+                        ),
+                        Db::parseDateParam(
+                            $field->getValueSql('end'),
+                            date('Y-m-d'),
+                            $this->includeToday ? '>=' : '>'
+                        )
+                    ];
+                    $or[] = $and;
+                }
             }
 
-            if ($field && $this->isOnGoing) {
-                $this->owner->subQuery
-                    ->andWhere(Db::parseDateParam(
-                        $field->getValueSql('start'),
-                        date('Y-m-d'),
-                        $this->includeToday ? '<=' : '<'
-                    ));
-                $this->owner->subQuery
-                    ->andWhere(Db::parseDateParam(
-                        $field->getValueSql('end'),
-                        date('Y-m-d'),
-                        $this->includeToday ? '>=' : '>'
-                    ));
-            }
-        } elseif (Craft::$app->db->getIsMysql()) {
-            /** @var \craft\base\FieldInterface|null $field */
-            $field = $this->field;
-            if ($field && $this->isFuture) {
-                $this->owner->subQuery
-                    ->andWhere(Db::parseDateParam(
-                        $field->getValueSql('start'),
-                        date('Y-m-d'),
-                        $this->includeToday ? '>=' : '>'
-                    ));
-            }
-
-            if ($field && $this->isPast) {
-                $this->owner->subQuery
-                    ->andWhere(Db::parseDateParam(
-                        $field->getValueSql('end'),
-                        date('Y-m-d'),
-                        $this->includeToday ? '<=' : '<'
-                    ));
-            }
-
-            if ($field && $this->isNotPast) {
-                $this->owner->subQuery
-                    ->andWhere(Db::parseDateParam(
-                        $field->getValueSql('end'),
-                        date('Y-m-d'),
-                        $this->includeToday ? '>=' : '>'
-                    ));
-            }
-
-            if ($field && $this->isOnGoing) {
-                $this->owner->subQuery
-                    ->andWhere(Db::parseDateParam(
-                        $field->getValueSql('start'),
-                        date('Y-m-d'),
-                        $this->includeToday ? '<=' : '<'
-                    ));
-                $this->owner->subQuery
-                    ->andWhere(Db::parseDateParam(
-                        $field->getValueSql('end'),
-                        date('Y-m-d'),
-                        $this->includeToday ? '>=' : '>'
-                    ));
+            // Only add the OR condition if we have more than just the 'or' element
+            if (count($or) > 1) {
+                $this->owner->subQuery->andWhere($or);
             }
         }
     }
 
     protected function parseArgumentValue(
         string|array $value,
-        string|bool $entryTypeHandle = null,
+        string|array|object|bool $entryTypeHandle = null,
         $includeToday = false,
     ): array {
         $handle = null;
@@ -205,13 +222,18 @@ class EntryQueryBehavior extends Behavior
         if (is_array($value)) {
             $handle = $value[0] ?? null;
             $arg2 = $value[1] ?? null;
-            if (is_string($arg2)) {
+            if (is_string($arg2) || is_array($arg2) || is_object($arg2)) {
                 $entryTypeHandle = $arg2;
             } elseif ($arg2 !== null) {
                 $includeToday = $arg2;
             }
         } else {
             $handle = $value;
+        }
+
+        // If entryTypeHandle is a comma-separated string, convert it to an array
+        if (is_string($entryTypeHandle) && strpos($entryTypeHandle, ',') !== false) {
+            $entryTypeHandle = array_map('trim', explode(',', $entryTypeHandle));
         }
 
         return [

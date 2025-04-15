@@ -4,6 +4,44 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## Forked Changes
+- Added support for Craft Commerce product types alongside standard entry types
+- Improved type handling to work with multiple entry/product types simultaneously
+- Added support for passing entry type handles as:
+  - Single string: `'events'`
+  - Array of strings: `['events', 'conferences']`
+- Added support for passing entry type objects directly:
+  - Single object: `craft.app.entries.getEntryTypeByHandle('events')`
+  - Array of objects: `[craft.app.entries.getEntryTypeByHandle('events'), craft.commerce.productTypes.getProductTypeByHandle('conferences')]`
+- Priority given to Craft entries over Commerce products when type handles are the same
+
+Examples:
+```twig
+{# Single type #}
+{% set entries = craft.entries.section('events').isFuture('dateFieldHandle', 'events') %}
+
+{# Multiple types with array #}
+{% set entries = craft.entries.section(['events', 'conferences']).isFuture('dateFieldHandle', ['events', 'conferences']) %}
+
+{# Using entry type objects directly #}
+{% set eventType = craft.app.entries.getEntryTypeByHandle('events') %}
+{% set entries = craft.entries.section('events').isFuture('dateFieldHandle', eventType) %}
+
+{# Using multiple type objects from products #}
+{% set types = [
+  craft.commerce.productTypes.getProductTypeByHandle('events')
+  craft.commerce.productTypes.getProductTypeByHandle('conferences')
+] %}
+{% set entries = craft.products().type(['events', 'conference']).isFuture('dateFieldHandle', types) %}
+
+{# Using multiple type objects from entries #}
+{% set types = [
+  craft.app.entries.getEntryTypeByHandle('events'),
+  craft.app.entries.getEntryTypeByHandle('conferences'),
+] %}
+{% set entries = craft.entries.section(['events', 'conferences']).isFuture('dateFieldHandle', types) %}
+```
+
 ## 5.0.0-beta.4 - 2024-12-16
 ### Fixed
 - Craft 5 version now works with Postgres ([#48](https://github.com/studioespresso/craft-date-range/issues/48))
@@ -19,11 +57,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 5.0.0-beta.1 - 2024-03-22
 
-> [!WARNING]  
+> [!WARNING]
 > When upgrading to Craft 5, you'll need to update templates that use ``isPast``, ``isFuture``, ``isOnGoing`` or ``isNotPast``. Please see the [upgrade guide](https://github.com/studioespresso/craft-date-range/tree/v5?tab=readme-ov-file#upgrading-to-craft-5) for more information.
 
 ### Added
-- Craft 5 support 
+- Craft 5 support
 
 ## 3.0.1 - 2022-06-19
 ### Fixed
@@ -70,7 +108,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 ## 2.1.2 - 2020-11-03
-### Fixed 
+### Fixed
 - Fixed an issue with ``formatted()`` where the start date was used instead of the end date.
 
 
@@ -104,7 +142,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 - Added french translation of the field labels (Thanks [@ockam](https://github.com/ockam), [#6](https://github.com/studioespresso/craft-date-range/issues/6))
-- Added dutch translations of the field labels 
+- Added dutch translations of the field labels
 - Added optional `includeToday` parameter to entry query behaviour
 
 ## 1.2.1 - 2019-12-02
@@ -119,8 +157,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.1.0 - 2019-11-29
 ### Added
 - The field can now be displayed on element overview pages in the CP
-- Added the `getFormatted` option to the field to display all data in 1 line 
+- Added the `getFormatted` option to the field to display all data in 1 line
 
 ## 1.0.1 - 2019-11-21
-### Fixed 
+### Fixed
 - Fixed an issue where using `isOngoing()` wouldn't use the correct data and woul
