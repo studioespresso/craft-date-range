@@ -27,10 +27,17 @@ Examples:
 {% set eventType = craft.app.entries.getEntryTypeByHandle('events') %}
 {% set entries = craft.entries.section('events').isFuture('dateFieldHandle', eventType) %}
 
-{# Using multiple type objects from different sources #}
+{# Using multiple type objects from products #}
+{% set types = [
+  craft.commerce.productTypes.getProductTypeByHandle('events')
+  craft.commerce.productTypes.getProductTypeByHandle('conferences')
+] %}
+{% set entries = craft.products().type(['events', 'conference']).isFuture('dateFieldHandle', types) %}
+
+{# Using multiple type objects from entries #}
 {% set types = [
   craft.app.entries.getEntryTypeByHandle('events'),
-  craft.commerce.productTypes.getProductTypeByHandle('conferences')
+  craft.app.entries.getEntryTypeByHandle('conferences'),
 ] %}
 {% set entries = craft.entries.section(['events', 'conferences']).isFuture('dateFieldHandle', types) %}
 ```
