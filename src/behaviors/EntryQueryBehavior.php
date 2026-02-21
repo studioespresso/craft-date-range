@@ -44,7 +44,7 @@ class EntryQueryBehavior extends Behavior
         ];
     }
 
-    public function isFuture($value, string|bool $entryTypeHandle = null, bool $includeToday = false)
+    public function isFuture($value, string|bool|null $entryTypeHandle = null, bool $includeToday = false)
     {
         $value = $this->parseArgumentValue($value, $entryTypeHandle, $includeToday);
 
@@ -56,7 +56,7 @@ class EntryQueryBehavior extends Behavior
         return $this->owner;
     }
 
-    public function isPast($value, string|bool $entryTypeHandle = null, $includeToday = false)
+    public function isPast($value, string|bool|null $entryTypeHandle = null, $includeToday = false)
     {
         $value = $this->parseArgumentValue($value, $entryTypeHandle, $includeToday);
 
@@ -67,7 +67,7 @@ class EntryQueryBehavior extends Behavior
         return $this->owner;
     }
 
-    public function isNotPast($value, string|bool $entryTypeHandle = null, $includeToday = false)
+    public function isNotPast($value, string|bool|null $entryTypeHandle = null, $includeToday = false)
     {
         $value = $this->parseArgumentValue($value, $entryTypeHandle, $includeToday);
 
@@ -78,7 +78,7 @@ class EntryQueryBehavior extends Behavior
         return $this->owner;
     }
 
-    public function isOnGoing($value, string|bool $entryTypeHandle = null, $includeToday = false)
+    public function isOnGoing($value, string|bool|null $entryTypeHandle = null, $includeToday = false)
     {
         $value = $this->parseArgumentValue($value, $entryTypeHandle, $includeToday);
 
@@ -197,7 +197,7 @@ class EntryQueryBehavior extends Behavior
 
     protected function parseArgumentValue(
         string|array $value,
-        string|bool $entryTypeHandle = null,
+        string|bool|null $entryTypeHandle = null,
         $includeToday = false,
     ): array {
         $handle = null;
