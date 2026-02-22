@@ -42,7 +42,26 @@ class EntriesArguments extends Entry
                 'type' => Type::listOf(QueryArgument::getType()),
                 'description' => 'Query entries where the end date is in the future',
             ],
-
+            'startsAfterDate' => [
+                'name' => 'startsAfterDate',
+                'type' => Type::listOf(Type::string()),
+                'description' => 'Query entries with a date-range starting after given date',
+            ],
+            'endsBeforeDate' => [
+                'name' => 'endsBeforeDate',
+                'type' => Type::listOf(Type::string()),
+                'description' => 'Query entries with a date-range ending before given date',
+            ],
+            'isDuringDate' => [
+                'name' => 'isDuringDate',
+                'type' => Type::listOf(Type::string()),
+                'description' => 'Query entries with a date-range which includes given date, or overlaps with given date-range',
+            ],
+            'isNotDuringDate' => [
+                'name' => 'isNotDuringDate',
+                'type' => Type::listOf(Type::string()),
+                'description' => 'Query entries with a date-range which excludes given date, or does not overlap with given date-range',
+            ],
         ]);
     }
 }

@@ -8,6 +8,9 @@ use craft\base\Serializable;
 use craft\helpers\DateTimeHelper;
 use craft\helpers\Json;
 use craft\i18n\Locale;
+use DateTime;
+use DateTimeInterface;
+use studioespresso\daterange\DateRange;
 use yii\base\BaseObject;
 
 class DateRangeData extends BaseObject implements Serializable
@@ -23,7 +26,6 @@ class DateRangeData extends BaseObject implements Serializable
     public $isPast;
 
     public $isNotPast;
-
 
     public function __construct($value = null, $config = [])
     {
@@ -80,16 +82,15 @@ class DateRangeData extends BaseObject implements Serializable
         return $string;
     }
 
-
     /**
-     * @param \DateTime $start
-     * @param \DateTime $end
+     * @param DateTime $start
+     * @param DateTime $end
      * @return bool
      * @throws \Exception
      */
     public function getIsFuture()
     {
-        $now = new \DateTime();
+        $now = new DateTime();
         if ($this->start->format('U') > $now->format('U')) {
             return true;
         }
@@ -97,14 +98,14 @@ class DateRangeData extends BaseObject implements Serializable
     }
 
     /**
-     * @param \DateTime $start
-     * @param \DateTime $end
+     * @param DateTime $start
+     * @param DateTime $end
      * @return bool
      * @throws \Exception
      */
     public function getIsOngoing()
     {
-        $now = new \DateTime();
+        $now = new DateTime();
         if (
             $this->start->format('U') < $now->format('U')
             && $this->end->format('U') > $now->format('U')
@@ -115,14 +116,14 @@ class DateRangeData extends BaseObject implements Serializable
     }
 
     /**
-     * @param \DateTime $start
-     * @param \DateTime $end
+     * @param DateTime $start
+     * @param DateTime $end
      * @return bool
      * @throws \Exception
      */
     public function getIsPast()
     {
-        $now = new \DateTime();
+        $now = new DateTime();
         if ($this->end->format('U') < $now->format('U')) {
             return true;
         }
@@ -130,18 +131,52 @@ class DateRangeData extends BaseObject implements Serializable
     }
 
     /**
-     * @param \DateTime $start
-     * @param \DateTime $end
+     * @param DateTime $start
+     * @param DateTime $end
      * @return bool
      * @throws \Exception
      */
     public function getIsNotPast()
     {
-        $now = new \DateTime();
+        $now = new DateTime();
         if ($this->end->format('U') > $now->format('U')) {
             return true;
         }
         return false;
+    }
+
+    public function startsAfterDate( string|DateTimeInterface|int $date ): bool
+    {
+        $date = DateTimeHelper::toDateTime($date);
+
+        return $this->start->format('U') > $date->format('U');
+    }
+
+    public function endsBeforeDate( string|DateTimeInterface|int $date ): bool
+    {
+        $date = DateTimeHelper::toDateTime($date);
+
+        return $this->end->format('U') < $date->format('U');
+    }
+
+    public function isDuringDate( string|array|DateTimeInterface|int $date ): bool
+    {
+        $dateRange = DateRange::toDateRange($date);
+
+        return (
+            $this->start->format('U') <= $dateRange['end']->format('U')
+            && $this->end->format('U') >= $dateRange['start']->format('U')
+        );
+    }
+
+    public function isNotDuringDate( string|array|DateTimeInterface|int $date ): bool
+    {
+        $dateRange = DateRange::toDateRange($date);
+
+        return (
+            $this->start->format('U') > $dateRange['end']->format('U')
+            || $this->end->format('U') < $dateRange['start']->format('U')
+        );
     }
 
     public static function normalize($value, FieldInterface $config)
