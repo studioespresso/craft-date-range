@@ -47,7 +47,7 @@ class DateRange extends Plugin
     // Static Methods
     // =========================================================================
 
-    public static function toDateRange( string|array|DateTimeInterface|int $value ): array|null
+    public static function toDateRange(string|array|DateTimeInterface|int $value): array|null
     {
         $start = $value;
         $end = $value;
@@ -56,7 +56,7 @@ class DateRange extends Plugin
             $value = preg_split('/\s?=>\s?/', $start);
             $start = $value[0] ?? null;
             $end = $value[1] ?? $start;
-        } else if (is_array($value)) {
+        } elseif (is_array($value)) {
             $start = $value['start'] ?? null;
             $end = $value['end'] ?? $start;
         }

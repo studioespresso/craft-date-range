@@ -105,7 +105,7 @@ class EntryQueryBehavior extends Behavior
     public function startsAfterDate(
         string|array $value,
         string|DateTimeInterface|int|null $date = null,
-        string|bool|null $entryTypeHandle = null
+        string|bool|null $entryTypeHandle = null,
     ): Component|null {
         $value = $this->parseDateArgumentValue($value, $date, $entryTypeHandle);
 
@@ -119,7 +119,7 @@ class EntryQueryBehavior extends Behavior
     public function endsBeforeDate(
         string|array $value,
         string|DateTimeInterface|int|null $date = null,
-        string|bool|null $entryTypeHandle = null
+        string|bool|null $entryTypeHandle = null,
     ): Component|null {
         $value = $this->parseDateArgumentValue($value, $date, $entryTypeHandle);
 
@@ -133,7 +133,7 @@ class EntryQueryBehavior extends Behavior
     public function isDuringDate(
         string|array $value,
         string|DateTimeInterface|int|null $date = null,
-        string|bool|null $entryTypeHandle = null
+        string|bool|null $entryTypeHandle = null,
     ): Component|null {
         $value = $this->parseDateRangeArgumentValue($value, $date, $entryTypeHandle);
 
@@ -147,7 +147,7 @@ class EntryQueryBehavior extends Behavior
     public function isNotDuringDate(
         string|array $value,
         string|DateTimeInterface|int|null $date = null,
-        string|bool|null $entryTypeHandle = null
+        string|bool|null $entryTypeHandle = null,
     ): Component|null {
         $value = $this->parseDateRangeArgumentValue($value, $date, $entryTypeHandle);
 
@@ -275,7 +275,7 @@ class EntryQueryBehavior extends Behavior
                             $field->getValueSql('end'),
                             $dateRange['start']->format('Y-m-d'),
                             '<'
-                        )
+                        ),
                     ]);
             }
         } elseif (Craft::$app->db->getIsMysql()) {
@@ -415,7 +415,7 @@ class EntryQueryBehavior extends Behavior
     protected function parseDateArgumentValue(
         string|array|DateTimeInterface|int $value,
         ?string $handle = null,
-        ?string $entryTypeHandle = null
+        ?string $entryTypeHandle = null,
     ): array {
         $date = null;
 
@@ -437,7 +437,7 @@ class EntryQueryBehavior extends Behavior
     protected function parseDateRangeArgumentValue(
         string|array|DateTimeInterface|int $value,
         ?string $handle = null,
-        ?string $entryTypeHandle = null
+        ?string $entryTypeHandle = null,
     ): array {
         $dateRange = null;
 

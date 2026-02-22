@@ -145,21 +145,21 @@ class DateRangeData extends BaseObject implements Serializable
         return false;
     }
 
-    public function startsAfterDate( string|DateTimeInterface|int $date ): bool
+    public function startsAfterDate(string|DateTimeInterface|int $date): bool
     {
         $date = DateTimeHelper::toDateTime($date);
 
         return $this->start->format('U') > $date->format('U');
     }
 
-    public function endsBeforeDate( string|DateTimeInterface|int $date ): bool
+    public function endsBeforeDate(string|DateTimeInterface|int $date): bool
     {
         $date = DateTimeHelper::toDateTime($date);
 
         return $this->end->format('U') < $date->format('U');
     }
 
-    public function isDuringDate( string|array|DateTimeInterface|int $date ): bool
+    public function isDuringDate(string|array|DateTimeInterface|int $date): bool
     {
         $dateRange = DateRange::toDateRange($date);
 
@@ -169,7 +169,7 @@ class DateRangeData extends BaseObject implements Serializable
         );
     }
 
-    public function isNotDuringDate( string|array|DateTimeInterface|int $date ): bool
+    public function isNotDuringDate(string|array|DateTimeInterface|int $date): bool
     {
         $dateRange = DateRange::toDateRange($date);
 
