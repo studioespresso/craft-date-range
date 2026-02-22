@@ -181,4 +181,141 @@ class EntryQueryBehaviorIntegrationTest extends Unit
         $this->assertNotContains($this->pastEntryId, $ids);
         $this->assertNotContains($this->futureEntryId, $ids);
     }
+
+    // ---- startsAfterDate ----
+
+    public function testStartsAfterDateReturnsEntriesStartingAfterGivenDate()
+    {
+        // Past starts 2020-01-01, Future starts 2030-01-01, Ongoing starts 2020-01-01
+        // Only Future starts after 2025-01-01
+        $ids = array_map('intval', Entry::find()
+            ->section('events')
+            ->startsAfterDate('2025-01-01', 'eventDates', 'event')
+            ->ids());
+
+        $this->assertContains($this->futureEntryId, $ids);
+        $this->assertNotContains($this->pastEntryId, $ids);
+        $this->assertNotContains($this->ongoingEntryId, $ids);
+    }
+
+    public function testStartsAfterDateExcludesAllWhenDateIsInFuture()
+    {
+        $ids = array_map('intval', Entry::find()
+            ->section('events')
+            ->startsAfterDate('2035-01-01', 'eventDates', 'event')
+            ->ids());
+
+        $this->assertNotContains($this->pastEntryId, $ids);
+        $this->assertNotContains($this->futureEntryId, $ids);
+        $this->assertNotContains($this->ongoingEntryId, $ids);
+    }
+
+    // ---- endsBeforeDate ----
+
+    public function testEndsBeforeDateReturnsEntriesEndingBeforeGivenDate()
+    {
+        // Past ends 2020-06-01, Future ends 2030-06-01, Ongoing ends 2030-06-01
+        // Only Past ends before 2025-01-01
+        $ids = array_map('intval', Entry::find()
+            ->section('events')
+            ->endsBeforeDate('2025-01-01', 'eventDates', 'event')
+            ->ids());
+
+        $this->assertContains($this->pastEntryId, $ids);
+        $this->assertNotContains($this->futureEntryId, $ids);
+        $this->assertNotContains($this->ongoingEntryId, $ids);
+    }
+
+    public function testEndsBeforeDateExcludesAllWhenDateIsInPast()
+    {
+        $ids = array_map('intval', Entry::find()
+            ->section('events')
+            ->endsBeforeDate('2015-01-01', 'eventDates', 'event')
+            ->ids());
+
+        $this->assertNotContains($this->pastEntryId, $ids);
+        $this->assertNotContains($this->futureEntryId, $ids);
+        $this->assertNotContains($this->ongoingEntryId, $ids);
+    }
+
+    // ---- isDuringDate ----
+
+    public function testIsDuringDateReturnsEntriesOverlappingWithSingleDate()
+    {
+        // 2025-06-01 falls within Ongoing (2020-01-01 to 2030-06-01) but not Past or Future
+        $ids = array_map('intval', Entry::find()
+            ->section('events')
+            ->isDuringDate('2025-06-01', 'eventDates', 'event')
+            ->ids());
+
+        $this->assertContains($this->ongoingEntryId, $ids);
+        $this->assertNotContains($this->pastEntryId, $ids);
+        $this->assertNotContains($this->futureEntryId, $ids);
+    }
+
+    public function testIsDuringDateReturnsEntriesOverlappingWithDateRange()
+    {
+        // 2019-06-01 => 2021-01-01 overlaps with Past (2020-01-01 to 2020-06-01) and Ongoing (2020-01-01 to 2030-06-01)
+        $ids = array_map('intval', Entry::find()
+            ->section('events')
+            ->isDuringDate('2019-06-01 => 2021-01-01', 'eventDates', 'event')
+            ->ids());
+
+        $this->assertContains($this->pastEntryId, $ids);
+        $this->assertContains($this->ongoingEntryId, $ids);
+        $this->assertNotContains($this->futureEntryId, $ids);
+    }
+
+    public function testIsDuringDateReturnsAllWhenRangeSpansEverything()
+    {
+        $ids = array_map('intval', Entry::find()
+            ->section('events')
+            ->isDuringDate('2010-01-01 => 2040-01-01', 'eventDates', 'event')
+            ->ids());
+
+        $this->assertContains($this->pastEntryId, $ids);
+        $this->assertContains($this->futureEntryId, $ids);
+        $this->assertContains($this->ongoingEntryId, $ids);
+    }
+
+    // ---- isNotDuringDate ----
+
+    public function testIsNotDuringDateExcludesOverlappingEntries()
+    {
+        // 2025-06-01 overlaps only with Ongoing — so Past and Future should be returned
+        $ids = array_map('intval', Entry::find()
+            ->section('events')
+            ->isNotDuringDate('2025-06-01', 'eventDates', 'event')
+            ->ids());
+
+        $this->assertContains($this->pastEntryId, $ids);
+        $this->assertContains($this->futureEntryId, $ids);
+        $this->assertNotContains($this->ongoingEntryId, $ids);
+    }
+
+    public function testIsNotDuringDateWithRangeExcludesOverlapping()
+    {
+        // 2019-06-01 => 2021-01-01 overlaps Past and Ongoing — only Future should be returned
+        $ids = array_map('intval', Entry::find()
+            ->section('events')
+            ->isNotDuringDate('2019-06-01 => 2021-01-01', 'eventDates', 'event')
+            ->ids());
+
+        $this->assertContains($this->futureEntryId, $ids);
+        $this->assertNotContains($this->pastEntryId, $ids);
+        $this->assertNotContains($this->ongoingEntryId, $ids);
+    }
+
+    public function testIsNotDuringDateReturnsNoneWhenAllOverlap()
+    {
+        // A range spanning everything should exclude all entries
+        $ids = array_map('intval', Entry::find()
+            ->section('events')
+            ->isNotDuringDate('2010-01-01 => 2040-01-01', 'eventDates', 'event')
+            ->ids());
+
+        $this->assertNotContains($this->pastEntryId, $ids);
+        $this->assertNotContains($this->futureEntryId, $ids);
+        $this->assertNotContains($this->ongoingEntryId, $ids);
+    }
 }

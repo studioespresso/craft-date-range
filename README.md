@@ -54,10 +54,38 @@ Example:
 {% set events = craft.entries.section('events').isFuture('dateRangeFieldHandle', 'entryTypeHandle')  %}
 ```
 
-The plugin includes `isOnGoing()`, `isPast()`,`isNotPast()`  and `isFuture()` query behaviors.
+The plugin includes the following query behaviors:
+- `isFuture()` - entries where the start date is in the future
+- `isPast()` - entries where the end date is in the past
+- `isNotPast()` - entries where the end date is in the future
+- `isOnGoing()` - entries where the start date is in the past and the end date is in the future
+- `startsAfterDate()` - entries where the start date is after the given date
+- `endsBeforeDate()` - entries where the end date is before the given date
+- `isDuringDate()` - entries where the date range overlaps with the given date or date range
+- `isNotDuringDate()` - entries where the date range does not overlap with the given date or date range
+
 The second argument passed should be the handle of the entry type you want to query.
 
-You can optionally pass `true` as a third argument to the query to make it include events that happen today in future/past/onGoing queries. 
+You can optionally pass `true` as a third argument to `isFuture`, `isPast`, `isNotPast` and `isOnGoing` to include events that happen today.
+
+The `startsAfterDate`, `endsBeforeDate`, `isDuringDate` and `isNotDuringDate` methods accept a date as the first argument, followed by the field handle and entry type handle:
+
+```twig
+{# Entries starting after a specific date #}
+{% set events = craft.entries.section('events').startsAfterDate('2025-06-01', 'dateRangeFieldHandle', 'entryTypeHandle').all() %}
+
+{# Entries ending before a specific date #}
+{% set events = craft.entries.section('events').endsBeforeDate('2025-12-31', 'dateRangeFieldHandle', 'entryTypeHandle').all() %}
+
+{# Entries overlapping with a single date #}
+{% set events = craft.entries.section('events').isDuringDate('2025-06-15', 'dateRangeFieldHandle', 'entryTypeHandle').all() %}
+
+{# Entries overlapping with a date range #}
+{% set events = craft.entries.section('events').isDuringDate('2025-06-01 => 2025-06-30', 'dateRangeFieldHandle', 'entryTypeHandle').all() %}
+
+{# Entries NOT overlapping with a date range #}
+{% set events = craft.entries.section('events').isNotDuringDate('2025-06-01 => 2025-06-30', 'dateRangeFieldHandle', 'entryTypeHandle').all() %}
+```
 
 ### Field values
 When using the field in your template, you have access to both `start` and `end` properties, as well as:
@@ -65,6 +93,19 @@ When using the field in your template, you have access to both `start` and `end`
 - `isPast`: returns `true` if the `end` property is past the current date & time.
 - `isFuture`: returns `true` if the `start` property is ahead the current date & time.
 - `isOnGoing`: returns `true` if the `start` property is past the current date & time *and* the `end` property is ahead of the current date & time.
+- `isNotPast`: returns `true` if the `end` property is ahead of the current date & time.
+- `startsAfterDate(date)`: returns `true` if the `start` property is after the given date.
+- `endsBeforeDate(date)`: returns `true` if the `end` property is before the given date.
+- `isDuringDate(date)`: returns `true` if the date range overlaps with the given date or date range.
+- `isNotDuringDate(date)`: returns `true` if the date range does not overlap with the given date or date range.
+
+The `isDuringDate` and `isNotDuringDate` methods accept a single date string, a date range string (using `=>` as separator), or an array with `start` and `end` keys:
+
+```twig
+{% if entry.dateRangeField.isDuringDate('2025-06-15') %}...{% endif %}
+{% if entry.dateRangeField.isDuringDate('2025-06-01 => 2025-06-30') %}...{% endif %}
+{% if entry.dateRangeField.isNotDuringDate('2025-07-01 => 2025-07-31') %}...{% endif %}
+```
 
 ### `getFormatted()`
 When using the ``getFormatted()`` function, you can pass paramters in 2 ways:
@@ -93,6 +134,19 @@ query{
         isFuture
       }
     }
+  }
+}
+```
+
+The following GraphQL query arguments are also available: `startsAfterDate`, `endsBeforeDate`, `isDuringDate`, and `isNotDuringDate`.
+
+```graphql
+query{
+  entries(
+   section: "events",
+   isDuringDate: ["2025-06-01 => 2025-06-30", "dateRangeFieldHandle", "entryTypeHandle"]
+  ) {
+    title
   }
 }
 ```

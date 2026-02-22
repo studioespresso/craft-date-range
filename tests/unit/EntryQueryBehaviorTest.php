@@ -272,4 +272,144 @@ class EntryQueryBehaviorTest extends Unit
         $this->assertNull($this->getBehavior()->field);
         $this->assertNull($this->query->subQuery->where);
     }
+
+    // ---- startsAfterDate ----
+
+    public function testStartsAfterDateSetsPropertiesAndReturnsOwner()
+    {
+        $result = $this->query->startsAfterDate('2025-06-15', 'myField', 'myType');
+
+        $this->assertSame($this->query, $result);
+        $this->assertEquals('myField', $this->getBehavior()->handle);
+        $this->assertEquals('myType', $this->getBehavior()->entryTypeHandle);
+        $this->assertNotNull($this->getBehavior()->startsAfterDate);
+    }
+
+    public function testStartsAfterDateAcceptsArrayFormat()
+    {
+        $this->query->startsAfterDate(['2025-06-15', 'myField', 'myType']);
+
+        $this->assertEquals('myField', $this->getBehavior()->handle);
+        $this->assertEquals('myType', $this->getBehavior()->entryTypeHandle);
+    }
+
+    public function testStartsAfterDateAddsWhereOnStartColumn()
+    {
+        $this->query->startsAfterDate('2025-06-15', 'eventDates', 'event');
+        $this->query->subQuery = new Query();
+
+        $this->getBehavior()->onAfterPrepare();
+
+        $whereStr = $this->getSubQueryWhereString();
+        $this->assertNotEmpty($whereStr);
+        $this->assertStringContainsString('start', $whereStr);
+    }
+
+    // ---- endsBeforeDate ----
+
+    public function testEndsBeforeDateSetsPropertiesAndReturnsOwner()
+    {
+        $result = $this->query->endsBeforeDate('2025-06-15', 'myField', 'myType');
+
+        $this->assertSame($this->query, $result);
+        $this->assertEquals('myField', $this->getBehavior()->handle);
+        $this->assertEquals('myType', $this->getBehavior()->entryTypeHandle);
+        $this->assertNotNull($this->getBehavior()->endsBeforeDate);
+    }
+
+    public function testEndsBeforeDateAcceptsArrayFormat()
+    {
+        $this->query->endsBeforeDate(['2025-06-15', 'myField', 'myType']);
+
+        $this->assertEquals('myField', $this->getBehavior()->handle);
+        $this->assertEquals('myType', $this->getBehavior()->entryTypeHandle);
+    }
+
+    public function testEndsBeforeDateAddsWhereOnEndColumn()
+    {
+        $this->query->endsBeforeDate('2025-06-15', 'eventDates', 'event');
+        $this->query->subQuery = new Query();
+
+        $this->getBehavior()->onAfterPrepare();
+
+        $whereStr = $this->getSubQueryWhereString();
+        $this->assertNotEmpty($whereStr);
+        $this->assertStringContainsString('end', $whereStr);
+    }
+
+    // ---- isDuringDate ----
+
+    public function testIsDuringDateSetsPropertiesAndReturnsOwner()
+    {
+        $result = $this->query->isDuringDate('2025-06-15', 'myField', 'myType');
+
+        $this->assertSame($this->query, $result);
+        $this->assertEquals('myField', $this->getBehavior()->handle);
+        $this->assertEquals('myType', $this->getBehavior()->entryTypeHandle);
+        $this->assertNotNull($this->getBehavior()->isDuringDate);
+    }
+
+    public function testIsDuringDateAcceptsArrayFormat()
+    {
+        $this->query->isDuringDate(['2025-06-15', 'myField', 'myType']);
+
+        $this->assertEquals('myField', $this->getBehavior()->handle);
+        $this->assertEquals('myType', $this->getBehavior()->entryTypeHandle);
+    }
+
+    public function testIsDuringDateAddsWhereOnBothColumns()
+    {
+        $this->query->isDuringDate('2025-06-15', 'eventDates', 'event');
+        $this->query->subQuery = new Query();
+
+        $this->getBehavior()->onAfterPrepare();
+
+        $whereStr = $this->getSubQueryWhereString();
+        $this->assertNotEmpty($whereStr);
+        $this->assertStringContainsString('start', $whereStr);
+        $this->assertStringContainsString('end', $whereStr);
+    }
+
+    // ---- isNotDuringDate ----
+
+    public function testIsNotDuringDateSetsPropertiesAndReturnsOwner()
+    {
+        $result = $this->query->isNotDuringDate('2025-06-15', 'myField', 'myType');
+
+        $this->assertSame($this->query, $result);
+        $this->assertEquals('myField', $this->getBehavior()->handle);
+        $this->assertEquals('myType', $this->getBehavior()->entryTypeHandle);
+        $this->assertNotNull($this->getBehavior()->isNotDuringDate);
+    }
+
+    public function testIsNotDuringDateAcceptsArrayFormat()
+    {
+        $this->query->isNotDuringDate(['2025-06-15', 'myField', 'myType']);
+
+        $this->assertEquals('myField', $this->getBehavior()->handle);
+        $this->assertEquals('myType', $this->getBehavior()->entryTypeHandle);
+    }
+
+    public function testIsNotDuringDateAddsWhereWithOrCondition()
+    {
+        $this->query->isNotDuringDate('2025-06-15', 'eventDates', 'event');
+        $this->query->subQuery = new Query();
+
+        $this->getBehavior()->onAfterPrepare();
+
+        $whereStr = $this->getSubQueryWhereString();
+        $this->assertNotEmpty($whereStr);
+        $this->assertStringContainsString('or', $whereStr);
+        $this->assertStringContainsString('start', $whereStr);
+        $this->assertStringContainsString('end', $whereStr);
+    }
+
+    // ---- Date range string parsing ----
+
+    public function testIsDuringDateAcceptsRangeString()
+    {
+        $this->query->isDuringDate('2025-06-01 => 2025-06-30', 'myField', 'myType');
+
+        $this->assertNotNull($this->getBehavior()->isDuringDate);
+    }
 }
