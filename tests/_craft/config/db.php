@@ -4,7 +4,7 @@ return [
     'server' => getenv('DB_SERVER') ?: 'db',
     'user' => getenv('DB_USER') ?: 'root',
     'password' => getenv('DB_PASSWORD') ?: 'root',
-    'database' => 'testing',
+    'database' => getenv('DB_DATABASE') ?: 'testing',
     'schema' => getenv('DB_SCHEMA'),
     'tablePrefix' => '',
     'driver' => getenv('DB_DRIVER') ?: 'mysql',
