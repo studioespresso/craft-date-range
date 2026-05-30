@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 6.0.0-alpha.1 - 2026-05-30
+### Added
+- Initial support for Craft 6.0.0
+
 ## 5.0.0-beta.4 - 2024-12-16
 ### Fixed
 - Craft 5 version now works with Postgres ([#48](https://github.com/studioespresso/craft-date-range/issues/48))

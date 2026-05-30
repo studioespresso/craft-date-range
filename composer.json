@@ -1,66 +1,66 @@
 {
-  "name": "studioespresso/craft-date-range",
-  "description": "Date range field",
-  "type": "craft-plugin",
-  "version": "5.1.0",
-  "keywords": [
-    "craft",
-    "cms",
-    "craftcms",
-    "craft-plugin",
-    "date range"
-  ],
-  "support": {
-    "docs": "https://github.com/studioespresso/craft-date-range/blob/master/README.md",
-    "issues": "https://github.com/studioespresso/craft-date-range/issues"
-  },
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Studio Espresso",
-      "homepage": "https://www.studioespresso.co"
+    "name": "studioespresso/craft-date-range",
+    "description": "Date range field",
+    "type": "craft-plugin",
+    "version": "6.0.0-alpha.1",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "date range"
+    ],
+    "support": {
+        "docs": "https://github.com/studioespresso/craft-date-range/blob/master/README.md",
+        "issues": "https://github.com/studioespresso/craft-date-range/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Studio Espresso",
+            "homepage": "https://www.studioespresso.co"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^6.0.0-alpha.5",
+        "craftcms/yii2-adapter": "^6.0.0"
+    },
+    "require-dev": {
+        "codeception/codeception": "^5.0.0",
+        "codeception/module-asserts": "^3.0",
+        "codeception/module-yii2": "^1.1.10",
+        "craftcms/ecs": "dev-main",
+        "craftcms/phpstan": "dev-main"
+    },
+    "scripts": {
+        "check-cs": "ecs check --ansi",
+        "fix-cs": "ecs check --ansi --fix",
+        "phpstan": "phpstan --memory-limit=1G",
+        "test": "codecept run unit"
+    },
+    "autoload": {
+        "psr-4": {
+            "studioespresso\\daterange\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Date Range Field",
+        "handle": "date-range",
+        "hasCpSettings": false,
+        "hasCpSection": false,
+        "changelogUrl": "https://raw.githubusercontent.com/studioespresso/craft-date-range/master/CHANGELOG.md",
+        "class": "studioespresso\\daterange\\DateRange"
+    },
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/janhenckens"
+        }
+    ],
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true,
+            "craftcms/plugin-installer": true
+        }
     }
-  ],
-  "require": {
-    "php": "^8.2",
-    "craftcms/cms": "^5.0.0"
-  },
-  "require-dev": {
-    "codeception/codeception": "^5.0.0",
-    "codeception/module-asserts": "^3.0",
-    "codeception/module-yii2": "^1.1.10",
-    "craftcms/ecs": "dev-main",
-    "craftcms/phpstan": "dev-main"
-  },
-  "scripts": {
-    "check-cs": "ecs check --ansi",
-    "fix-cs": "ecs check --ansi --fix",
-    "phpstan": "phpstan --memory-limit=1G",
-    "test": "codecept run unit"
-  },
-  "autoload": {
-    "psr-4": {
-      "studioespresso\\daterange\\": "src/"
-    }
-  },
-  "extra": {
-    "name": "Date Range Field",
-    "handle": "date-range",
-    "hasCpSettings": false,
-    "hasCpSection": false,
-    "changelogUrl": "https://raw.githubusercontent.com/studioespresso/craft-date-range/master/CHANGELOG.md",
-    "class": "studioespresso\\daterange\\DateRange"
-  },
-  "funding": [
-    {
-      "type": "github",
-      "url": "https://github.com/sponsors/janhenckens"
-    }
-  ],
-  "config": {
-    "allow-plugins": {
-      "yiisoft/yii2-composer": true,
-      "craftcms/plugin-installer": true
-    }
-  }
 }
